@@ -7,7 +7,7 @@
           <label for="email">Email</label>
           <input
             type="email"
-            v-model="email"
+            v-model="loginRequest.email"
             id="email"
             placeholder="Enter your email"
             required
@@ -18,7 +18,7 @@
           <label for="password">Password</label>
           <input
             type="password"
-            v-model="password"
+            v-model="loginRequest.password"
             id="password"
             placeholder="Enter your password"
             required
@@ -26,6 +26,7 @@
         </div>
 
         <button type="submit" class="login-button">Login</button>
+        <p>{{ this.message }}</p>
       </form>
 
       <p class="register-link">
@@ -38,48 +39,45 @@
 
 <script>
 import { login } from "@/utils/auth";
+import LoginService from "../services/LoginService";
+import { authState } from "@/utils/authState";
 
 export default {
   name: "LoginPage",
   data() {
     return {
-      email: "",
-      password: "",
+      loginRequest: {
+        email: "",
+        password: "",
+      },
+      message: "",
     };
   },
   methods: {
     async handleLogin() {
-      const response = await fetch("https://your-api-url.com/login", {
-        /* API call logic */
-      });
-      const data = await response.json();
-      if (response.ok) {
-        login(data.token || "dummy-token");
-        this.$router.push("/");
-      }
-    },
-    // async handleLogin() {
-    //   try {
-    //     const response = await fetch("https://your-api-url.com/login", {
-    //       method: "POST",
-    //       headers: { "Content-Type": "application/json" },
-    //       body: JSON.stringify({ email: this.email, password: this.password }),
-    //     });
+      LoginService.login(this.loginRequest)
+        .then((response) => {
+          // console.log(response); // Debug the full response
+          const user = response.data.data;
+          this.message = response.data.message;
+          login(user);
+          authState.isAuthenticated = true;
 
-    //     const data = await response.json();
-    //     if (response.ok) {
-    //       // Simulating token storage in localStorage
-    //       localStorage.setItem("user-token", data.token || "dummy-token");
-    //       alert("Login successful!");
-    //       this.$router.push("/");
-    //     } else {
-    //       alert(data.message || "Login failed");
-    //     }
-    //   } catch (error) {
-    //     console.error("Error:", error);
-    //     alert("An error occurred while logging in.");
-    //   }
-    // },
+          // alert(`Login successful! ${user.email}`); // Use template literal for the email
+          this.$router.push({ name: "Home" });
+        })
+        .catch((e) => {
+          this.loginRequest.email = "";
+          this.loginRequest.password = "";
+          this.message = e.response?.data?.message || "An error occurred"; // Handle undefined error message
+          console.log(e.response?.data || e); // Log the error response
+        });
+    },
+    mounted() {
+      this.message = "Please Login!";
+      //     console.error("Error:", error);
+      //     alert("An error occurred while logging in.");
+    },
   },
 };
 </script>
