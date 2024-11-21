@@ -121,6 +121,7 @@ export default {
 /* Form Styling */
 .form-group {
   margin-bottom: 15px;
+  margin-right: 20px;
   text-align: left;
 }
 
@@ -148,6 +149,7 @@ input:focus {
 /* Button Styling */
 .register-button {
   width: 100%;
+  margin-top: 15px;
   padding: 10px 15px;
   background-color: #007bff;
   border: none;
