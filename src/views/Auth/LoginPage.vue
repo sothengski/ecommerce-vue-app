@@ -39,7 +39,7 @@
 
 <script>
 import { login } from "@/utils/auth";
-import LoginService from "../services/LoginService";
+import LoginService from "../../services/LoginService";
 import { authState } from "@/utils/authState";
 
 export default {
@@ -64,7 +64,7 @@ export default {
           authState.isAuthenticated = true;
 
           // alert(`Login successful! ${user.email}`); // Use template literal for the email
-          this.$router.push({ name: "UserInfo" });
+          this.$router.push({ name: "Dashboard" });
         })
         .catch((e) => {
           this.loginRequest.email = "";

@@ -1,12 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "@/views/HomePage.vue";
-import LoginPage from "@/views/LoginPage.vue";
-import RegisterPage from "@/views/RegisterPage.vue";
-import CategoriesPage from "@/views/CategoriesPage.vue";
-import ProductsPage from "@/views/ProductsPage.vue";
-import CartPage from "@/views/CartPage.vue";
-import OrdersPage from "@/views/OrdersPage.vue";
-import UserInfo from "@/views/UserInfoPage.vue";
+import LoginPage from "@/views/Auth/LoginPage.vue";
+import RegisterPage from "@/views/Auth/RegisterPage.vue";
+import CategoriesPage from "@/views/Category/CategoriesPage.vue";
+import ProductsPage from "@/views/Product/ProductsPage.vue";
+import CartPage from "@/views/Cart/CartPage.vue";
+import OrdersPage from "@/views/Order/OrdersPage.vue";
+import Dashboard from "@/views//Dashboard.vue";
+import UserInfo from "@/views/UserInfo/UserInfo.vue";
+import UpdateUserInfo from "@/views/UserInfo/UpdateUserInfo.vue";
 import { isAuthenticated } from "@/utils/auth";
 
 // Simulating authentication state
@@ -30,11 +32,46 @@ const routes = [
     component: OrdersPage,
     meta: { requiresAuth: true },
   },
+
   {
-    path: "/user-info",
-    name: "UserInfo",
-    component: UserInfo,
-    meta: { requiresAuth: true },
+    path: "/dashboard",
+    name: "Dashboard",
+    component: Dashboard,
+    redirect: "/user-info", // Redirect to User Information by default
+    children: [
+      {
+        path: "/user-info",
+        name: "UserInfo",
+        component: UserInfo,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "/user-info/edit",
+        name: "UpdateUserInfo",
+        component: UpdateUserInfo,
+        meta: { requiresAuth: true },
+      },
+      // {
+      //   path: "user-management",
+      //   name: "UserManagement",
+      //   component: UserManagement,
+      // },
+      // {
+      //   path: "product-management",
+      //   name: "ProductManagement",
+      //   component: ProductManagement,
+      // },
+      // {
+      //   path: "category-management",
+      //   name: "CategoryManagement",
+      //   component: CategoryManagement,
+      // },
+      // {
+      //   path: "order-management",
+      //   name: "OrderManagement",
+      //   component: OrderManagement,
+      // },
+    ],
   },
 ];
 
