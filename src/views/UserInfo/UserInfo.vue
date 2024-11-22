@@ -1,5 +1,5 @@
 <template>
-  <div class="user-information">
+  <div class="container">
     <div class="header">
       <h2>User Information</h2>
       <button class="edit-icon" @click="goToEdit">✏️</button>
@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style scoped>
-.user-information {
+.container {
   padding: 20px;
   background-color: #f9f9f9;
   border: 1px solid #ddd;

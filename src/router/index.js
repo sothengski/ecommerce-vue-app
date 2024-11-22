@@ -70,7 +70,13 @@ const routes = [
           },
           {
             path: "/role-list/add",
-            name: "AddOrUpdateRole",
+            name: "AddRole",
+            component: AddOrUpdateRole,
+            meta: { requiresAuth: true },
+          },
+          {
+            path: "/role-list/edit/:id",
+            name: "EditRole",
             component: AddOrUpdateRole,
             meta: { requiresAuth: true },
           },

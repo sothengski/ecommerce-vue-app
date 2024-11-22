@@ -1,5 +1,5 @@
 <template>
-  <div class="update-user-info">
+  <div class="container">
     <h2>Update User Information</h2>
     <form @submit.prevent="updateUserInfo">
       <div class="form-group">
@@ -83,7 +83,7 @@ export default {
 </script>
 
 <style scoped>
-.update-user-info {
+.container {
   padding: 20px;
   background-color: #f9f9f9;
   margin: auto;
@@ -91,7 +91,7 @@ export default {
   border-radius: 10px;
 }
 
-.update-user-info form {
+.container form {
   display: flex;
   flex-direction: column;
 }
@@ -99,11 +99,11 @@ export default {
   margin-bottom: 15px;
 }
 
-.update-user-info label form {
+.container label form {
   margin-bottom: 5px;
 }
 
-.update-user-info input,
+.container input,
 textarea,
 button {
   padding: 8px;
@@ -115,7 +115,7 @@ button {
   box-sizing: border-box;
 }
 
-.update-user-info form .form-actions {
+.container form .form-actions {
   display: flex;
   gap: 10px;
 }

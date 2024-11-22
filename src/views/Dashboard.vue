@@ -23,6 +23,9 @@
         <li>
           <router-link to="/order-management">Order Management</router-link>
         </li>
+        <li class="logout">
+          <button @click="logout">Logout</button>
+        </li>
       </ul>
     </div>
 
@@ -34,16 +37,26 @@
 </template>
 
 <script>
+import { logout } from "@/utils/auth";
+import { authState } from "@/utils/authState";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Dashboard",
+  methods: {
+    logout() {
+      logout();
+      authState.isAuthenticated = false; // Update the reactive state
+      alert("You have logged out.");
+      this.$router.push("/login");
+    },
+  },
 };
 </script>
 
 <style scoped>
 .dashboard {
   display: flex;
-  /*  height: 100vh; /* Full-height layout */
+  height: 75vh; /* Full-height layout */
   margin: auto;
 }
 
@@ -82,5 +95,29 @@ export default {
   width: 80%;
   padding: 20px;
   background-color: #fff;
+}
+
+/* Styling for the logout button */
+.logout button {
+  background-color: #dc3545; /* Red background */
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 25px;
+  width: 100%;
+}
+
+.logout button:hover {
+  background-color: #c82333; /* Darker red on hover */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logout button:focus {
+  outline: none;
+  box-shadow: 0px 0px 5px #ff6b6b; /* Slight glow when focused */
 }
 </style>

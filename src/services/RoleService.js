@@ -1,8 +1,24 @@
 import http from "../http-common";
 
 class RoleService {
+  // Get all roles data
   getAllRoles(data) {
     return http.get("/roles", data);
+  }
+
+  // Get a role data by Id
+  getRole(roleId) {
+    return http.get(`/roles/${roleId}`);
+  }
+
+  // Create a new role
+  createRole(inputData) {
+    return http.post(`/roles`, inputData);
+  }
+
+  // Update a role
+  updateRole(roleId, data) {
+    return http.put(`/roles/${roleId}`, data);
   }
 
   // Delete a role

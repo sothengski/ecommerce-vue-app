@@ -1,5 +1,5 @@
 <template>
-  <div class="user-info-page">
+  <div class="container">
     <div class="layout">
       <!-- Left Tab Bar -->
       <div class="tab-bar">
@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style scoped>
-.user-info-page {
+.container {
   display: flex;
   flex-direction: column;
   padding: 20px;

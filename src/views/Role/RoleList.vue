@@ -1,10 +1,9 @@
 <template>
-  <div>
+  <div class="container">
     <div class="header">
       <h2>Role List</h2>
       <button class="add-btn" @click="addNewRole">Add New Role</button>
     </div>
-    <!-- <p>Manage your roles here.</p> -->
     <table class="styled-table">
       <thead>
         <tr>
@@ -55,8 +54,9 @@ export default {
     },
     editRole(role) {
       // Handle edit logic (e.g., show a form or navigate to an edit page)
-      alert(`Editing role: ${role.name}`);
+      // alert(`Editing role: ${role.name}`);
       // You can implement a modal or redirect to an edit page
+      this.$router.push(`/role-list/edit/${role.id}`);
     },
     async deleteRole(roleId) {
       const confirmed = confirm("Are you sure you want to delete this role?");
@@ -80,11 +80,17 @@ export default {
 
 <style scoped>
 /* General styling for the page */
+.container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
 }
 
 h2 {

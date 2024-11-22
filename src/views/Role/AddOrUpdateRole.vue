@@ -1,14 +1,17 @@
 <template>
-  <div class="page">
-    <h2>Add or Update Role</h2>
+  <div class="container">
+    <h2>{{ isEdit ? "Update Role" : "Add Role" }}</h2>
     <form @submit.prevent="saveRole">
       <div class="form-group">
         <label for="roleName">Role Name:</label>
-        <input type="text" id="roleName" v-model="roleName" />
+        <input type="text" id="roleName" v-model="form.roleName" />
       </div>
 
       <div class="form-actions">
-        <button type="submit" @click="saveRole">Save</button>
+        <button type="submit" :disabled="!form.roleName.trim()">
+          {{ isEdit ? "Update" : "Save" }}
+        </button>
+
         <button type="button" @click="cancelBtn">Cancel</button>
       </div>
     </form>
@@ -16,19 +19,62 @@
 </template>
 
 <script>
+import RoleService from "../../services/RoleService";
+
 export default {
   data() {
     return {
       form: {
+        id: null, // Holds the ID for updates
         roleName: "",
       },
-      // roleName: "",
+      isEdit: false, // Flag to determine if it's an edit or add operation
     };
   },
+  created() {
+    // Check if editing an existing role
+    const roleId = this.$route.params.id;
+    if (roleId) {
+      this.isEdit = true;
+      this.loadRole(roleId);
+    }
+  },
   methods: {
-    saveRole() {
-      alert(`Saving role: ${this.roleName}`);
-      // Add logic for saving the role
+    async loadRole(roleId) {
+      try {
+        const response = await RoleService.getRole(roleId); //axios.get(`/roles/${roleId}`);
+        this.form = {
+          id: response.data.id,
+          roleName: response.data.name,
+        };
+      } catch (error) {
+        console.error("Error loading role:", error);
+      }
+    },
+    async saveRole() {
+      if (this.isEdit) {
+        // Update existing role
+        try {
+          await RoleService.updateRole(this.form.id, {
+            name: this.form.roleName,
+          });
+          // alert("Role updated successfully!");
+          this.$router.push("/role-list");
+        } catch (error) {
+          console.error("Error updating role:", error);
+          alert("Failed to update role.");
+        }
+      } else {
+        // Add new role
+        try {
+          await RoleService.createRole(this.form.roleName);
+          // alert("Role added successfully!");
+          this.$router.push("/role-list");
+        } catch (error) {
+          console.error("Error adding role:", error);
+          alert("Failed to add role.");
+        }
+      }
     },
     cancelBtn() {
       this.$router.push("/role-list");
@@ -38,34 +84,27 @@ export default {
 </script>
 
 <style scoped>
-.page {
-  max-width: 600px; /* Set a maximum width for the form container */
-  margin: auto;
+.container {
   padding: 20px;
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+  margin: auto;
+  border: 1px solid #ccc;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.page form {
+.container form {
   display: flex;
   flex-direction: column;
-  width: 100%;
 }
 .form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
-.page label {
-  margin-bottom: 10px;
-  font-size: 16px;
-  color: #333;
+.container label form {
+  margin-bottom: 5px;
 }
 
-.page input,
+.container input,
 textarea,
 button {
   padding: 8px;
@@ -77,32 +116,38 @@ button {
   box-sizing: border-box;
 }
 
-.form-actions {
+.container form .form-actions {
   display: flex;
   gap: 10px;
-  justify-content: space-between;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button[type="submit"] {
   background-color: #007bff;
   color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
 }
 
-button[type="submit"]:hover {
+button[type="submit"]:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+button[type="submit"]:hover:enabled {
   background-color: #0056b3;
 }
 
 button[type="button"] {
   background-color: #6c757d;
   color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
 }
 
 button[type="button"]:hover {
