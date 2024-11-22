@@ -6,10 +6,13 @@ import CategoriesPage from "@/views/Category/CategoriesPage.vue";
 import ProductsPage from "@/views/Product/ProductsPage.vue";
 import CartPage from "@/views/Cart/CartPage.vue";
 import OrdersPage from "@/views/Order/OrdersPage.vue";
-import Dashboard from "@/views//Dashboard.vue";
+import Dashboard from "@/views/Dashboard.vue";
+import RoleList from "@/views/Role/RoleList.vue";
 import UserInfo from "@/views/UserInfo/UserInfo.vue";
 import UpdateUserInfo from "@/views/UserInfo/UpdateUserInfo.vue";
 import { isAuthenticated } from "@/utils/auth";
+import AddOrUpdateRole from "@/views/Role/AddOrUpdateRole.vue";
+import RolePage from "@/views/Role/RolePage.vue";
 
 // Simulating authentication state
 // const isAuthenticated = () => !!localStorage.getItem("user-token");
@@ -51,11 +54,29 @@ const routes = [
         component: UpdateUserInfo,
         meta: { requiresAuth: true },
       },
-      // {
-      //   path: "user-management",
-      //   name: "UserManagement",
-      //   component: UserManagement,
-      // },
+      {
+        path: "/rolepage",
+        name: "RolePage",
+        component: RolePage,
+        meta: { requiresAuth: true },
+        redirect: "/role-list", // Redirect to User Information by default
+
+        children: [
+          {
+            path: "/role-list",
+            name: "RoleList",
+            component: RoleList,
+            meta: { requiresAuth: true },
+          },
+          {
+            path: "/role-list/add",
+            name: "AddOrUpdateRole",
+            component: AddOrUpdateRole,
+            meta: { requiresAuth: true },
+          },
+        ],
+      },
+
       // {
       //   path: "product-management",
       //   name: "ProductManagement",

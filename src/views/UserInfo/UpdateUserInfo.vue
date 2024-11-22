@@ -1,21 +1,31 @@
 <template>
-  <div class="update-information">
-    <h2>Update Information</h2>
+  <div class="update-user-info">
+    <h2>Update User Information</h2>
     <form @submit.prevent="updateUserInfo">
-      <label for="email">Email:</label>
-      <input
-        type="email"
-        id="email"
-        v-model="updatedUser.email"
-        placeholder="Enter new email"
-      />
-      <label for="password">Password:</label>
-      <input
-        type="password"
-        id="password"
-        v-model="updatedUser.password"
-        placeholder="Enter new password"
-      />
+      <div class="form-group">
+        <label for="userName">Username</label>
+        <input type="text" id="userName" v-model="form.userName" required />
+      </div>
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" v-model="form.firstName" required />
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" v-model="form.lastName" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" v-model="form.phone" required />
+      </div>
+      <div class="form-group">
+        <label for="shippingAddress">Shipping Address</label>
+        <textarea
+          id="shippingAddress"
+          v-model="form.shippingAddress"
+          required
+        ></textarea>
+      </div>
       <div class="form-actions">
         <button type="submit">Update</button>
         <button type="button" @click="cancelEdit">Cancel</button>
@@ -25,28 +35,45 @@
 </template>
 
 <script>
-import { getUserData } from "@/utils/auth";
-
 export default {
-  name: "UpdateInformation",
   data() {
     return {
-      updatedUser: {
-        email: "",
-        password: "",
+      form: {
+        userName: "",
+        firstName: "",
+        lastName: "",
+        phone: "",
+        shippingAddress: "",
       },
     };
   },
-  created() {
-    const user = getUserData();
-    this.updatedUser.email = user.email;
-  },
   methods: {
-    updateUserInfo() {
+    async updateUserInfo() {
       alert(
-        `User updated: Email=${this.updatedUser.email}, Password=${this.updatedUser.password}`
+        `User updated: FirstName=${this.form.firstName}, LastName=${this.form.lastName}`
       );
-      this.$router.push("/user-info");
+      // try {
+      //   // Example of an API call to update user information
+      //   const response = await fetch("/api/update-user", {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify(this.form),
+      //   });
+
+      //   if (response.ok) {
+      //     const result = await response.json();
+      //     alert("User information updated successfully!");
+      //     console.log("Server response:", result);
+      //     this.$router.push("/user-info");
+      //   } else {
+      //     throw new Error("Failed to update user information.");
+      //   }
+      // } catch (error) {
+      //   console.error(error);
+      //   alert("An error occurred while updating user information.");
+      // }
     },
     cancelEdit() {
       this.$router.push("/user-info");
@@ -56,30 +83,39 @@ export default {
 </script>
 
 <style scoped>
-.update-information {
+.update-user-info {
   padding: 20px;
   background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  margin: auto;
+  border: 1px solid #ccc;
+  border-radius: 10px;
 }
 
-.update-information form {
+.update-user-info form {
   display: flex;
   flex-direction: column;
 }
-
-.update-information form label {
-  margin: 10px 0 5px;
+.form-group {
+  margin-bottom: 15px;
 }
 
-.update-information form input {
+.update-user-info label form {
+  margin-bottom: 5px;
+}
+
+.update-user-info input,
+textarea,
+button {
   padding: 8px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  width: 100%;
+  margin: 5px 0 10px;
+  box-sizing: border-box;
 }
 
-.update-information form .form-actions {
+.update-user-info form .form-actions {
   display: flex;
   gap: 10px;
 }

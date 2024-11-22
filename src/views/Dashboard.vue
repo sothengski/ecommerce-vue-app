@@ -6,11 +6,11 @@
         <li>
           <router-link to="/user-info">User Information</router-link>
         </li>
-        <!-- <li>
-          <router-link to="/user-management">User Management</router-link>
+        <li>
+          <router-link to="/role-list">Role Management</router-link>
         </li>
         <li>
-          <router-link to="/product-management">Product Management</router-link>
+          <router-link to="/user-management">User Management</router-link>
         </li>
         <li>
           <router-link to="/category-management"
@@ -18,8 +18,11 @@
           >
         </li>
         <li>
+          <router-link to="/product-management">Product Management</router-link>
+        </li>
+        <li>
           <router-link to="/order-management">Order Management</router-link>
-        </li> -->
+        </li>
       </ul>
     </div>
 
@@ -40,14 +43,16 @@ export default {
 <style scoped>
 .dashboard {
   display: flex;
-  height: 100vh; /* Full-height layout */
+  /*  height: 100vh; /* Full-height layout */
+  margin: auto;
 }
 
 .sidebar {
   width: 20%;
   background-color: #f4f4f4;
-  border-right: 1px solid #ddd;
   padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
 }
 
 .sidebar ul {
