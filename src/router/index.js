@@ -6,6 +6,7 @@ import CategoriesPage from "@/views/CategoriesPage.vue";
 import ProductsPage from "@/views/ProductsPage.vue";
 import CartPage from "@/views/CartPage.vue";
 import OrdersPage from "@/views/OrdersPage.vue";
+import UserInfo from "@/views/UserInfoPage.vue";
 import { isAuthenticated } from "@/utils/auth";
 
 // Simulating authentication state
@@ -27,6 +28,12 @@ const routes = [
     path: "/orders",
     name: "Orders",
     component: OrdersPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/user-info",
+    name: "UserInfo",
+    component: UserInfo,
     meta: { requiresAuth: true },
   },
 ];

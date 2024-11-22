@@ -64,7 +64,7 @@ export default {
           authState.isAuthenticated = true;
 
           // alert(`Login successful! ${user.email}`); // Use template literal for the email
-          this.$router.push({ name: "Home" });
+          this.$router.push({ name: "UserInfo" });
         })
         .catch((e) => {
           this.loginRequest.email = "";
