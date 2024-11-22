@@ -9,7 +9,7 @@
     Whether you're looking for casual wear, office attire, or something special for an evening out, 
     we have everything you need to refresh your wardrobe. Explore our latest collections and find your next favorite outfit today!
   </p>
-  <router-link to="" class="shop-now-btn">Shop Now</router-link>
+  <router-link to="/products" class="shop-now-btn">Shop Now</router-link>
   </div>
 </template>
 
