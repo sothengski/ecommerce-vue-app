@@ -7,7 +7,7 @@
           <label for="email">Email</label>
           <input
             type="email"
-            v-model="email"
+            v-model="registerRequest.email"
             id="email"
             placeholder="Enter your email"
             required
@@ -18,7 +18,7 @@
           <label for="password">Password</label>
           <input
             type="password"
-            v-model="password"
+            v-model="registerRequest.password"
             id="password"
             placeholder="Enter your password"
             required
@@ -29,7 +29,7 @@
           <label for="confirmPassword">Confirm Password</label>
           <input
             type="password"
-            v-model="confirmPassword"
+            v-model="registerRequest.confirmPassword"
             id="confirmPassword"
             placeholder="Confirm your password"
             required
@@ -48,13 +48,18 @@
 </template>
 
 <script>
+import AuthService from "../../services/AuthService";
+
 export default {
   name: "RegisterPage",
   data() {
     return {
-      email: "",
-      password: "",
-      confirmPassword: "",
+      registerRequest: {
+        email: "",
+        password: "",
+        confirmPassword: "",
+      },
+      message: "",
     };
   },
   methods: {
@@ -65,23 +70,23 @@ export default {
       }
 
       try {
-        const response = await fetch("https://your-api-url.com/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: this.email,
-            password: this.password,
-          }),
+        await AuthService.register(this.registerRequest).then((response) => {
+          // alert("Role updated successfully!");
+          // const data = await response.json();
+          if (response.status === 201 || response.status === 200) {
+            this.registerRequest.email = "";
+            this.registerRequest.password = "";
+            this.registerRequest.confirmPassword = "";
+            this.$router.push("/login");
+            // alert("Registration successful!");
+          } else {
+            alert(response.data.message || "Registration failed");
+          }
         });
-
-        const data = await response.json();
-        if (response.ok) {
-          alert("Registration successful!");
-          this.$router.push("/login");
-        } else {
-          alert(data.message || "Registration failed");
-        }
       } catch (error) {
+        this.registerRequest.email = "";
+        this.registerRequest.password = "";
+        this.registerRequest.confirmPassword = "";
         console.error("Error:", error);
         alert("An error occurred while registering.");
       }

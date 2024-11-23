@@ -33,7 +33,7 @@
               <router-link to="/register">Register</router-link>
             </li>
             <li v-if="isAuthenticated">
-              <router-link to="/dashboard">Settings</router-link>
+              <router-link to="/dashboard">My Account</router-link>
             </li>
             <!-- <li v-if="isAuthenticated">
               <button @click="logout">Logout</button>

@@ -41,7 +41,7 @@ export default {
     async fetchRoles() {
       try {
         const response = await RoleService.getAllRoles();
-        this.roles = response.data; // Assume the API returns an array of roles
+        this.roles = response.data;
       } catch (error) {
         console.error("Error fetching roles:", error);
       }
@@ -49,14 +49,11 @@ export default {
     addNewRole() {
       // Navigate to the add role route
       this.$router.push("/role-list/add");
-      // Handle navigation to add role form or show a modal
       // alert("Navigate to Add New Role form or open a modal.");
     },
     editRole(role) {
-      // Handle edit logic (e.g., show a form or navigate to an edit page)
-      // alert(`Editing role: ${role.name}`);
-      // You can implement a modal or redirect to an edit page
       this.$router.push(`/role-list/edit/${role.id}`);
+      // alert(`Editing role: ${role.name}`);
     },
     async deleteRole(roleId) {
       const confirmed = confirm("Are you sure you want to delete this role?");

@@ -39,7 +39,7 @@
 
 <script>
 import { login } from "@/utils/auth";
-import LoginService from "../../services/LoginService";
+import AuthService from "../../services/AuthService";
 import { authState } from "@/utils/authState";
 
 export default {
@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     async handleLogin() {
-      LoginService.login(this.loginRequest)
+      AuthService.login(this.loginRequest)
         .then((response) => {
           // console.log(response); // Debug the full response
           const user = response.data.data;

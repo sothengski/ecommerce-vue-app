@@ -42,7 +42,7 @@ export default {
   methods: {
     async loadRole(roleId) {
       try {
-        const response = await RoleService.getRole(roleId); //axios.get(`/roles/${roleId}`);
+        const response = await RoleService.getRole(roleId);
         this.form = {
           id: response.data.id,
           roleName: response.data.name,
