@@ -5,7 +5,7 @@
       <div class="container">
         <!-- Left Section: Logo -->
         <div class="logo">
-          <router-link to="/">MyApp</router-link>
+          <router-link to="/">FashionAura</router-link>
         </div>
 
         <!-- Middle Section: Nav Links -->
@@ -91,6 +91,7 @@ export default {
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  background-color: #f6f4f3;
 }
 
 /* AppBar styles */
