@@ -11,11 +11,54 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.page {
+  display: flex;
+  flex-direction: column;
   padding: 20px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
+}
+
+/* Layout */
+.layout {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* Left Tab Bar */
+.tab-bar {
+  width: 30%;
+  background-color: #f4f4f4;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+}
+
+.tab-bar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.tab-bar li {
+  margin: 10px 0;
+}
+
+.tab-bar li a {
+  display: block;
+  padding: 10px;
+  background-color: #e9ecef;
   border-radius: 5px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  text-decoration: none;
+  color: #000;
+}
+
+.tab-bar li a.router-link-active {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Right Content Area */
+.content {
+  width: 70%;
+  padding: 20px;
 }
 </style>
