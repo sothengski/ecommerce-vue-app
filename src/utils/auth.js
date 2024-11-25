@@ -2,7 +2,7 @@
 export const isAuthenticated = () => !!localStorage.getItem("user");
 
 // Save the data in localStorage
-export const login = (userData) => {
+export const savedUserData = (userData) => {
   localStorage.setItem("user", JSON.stringify(userData));
 };
 

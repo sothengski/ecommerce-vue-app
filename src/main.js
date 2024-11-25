@@ -10,6 +10,7 @@ app.mount("#app");
 
 /**
  * Buyer
+ *      Home page
  *
  *1      Products List in the Home Page
  *

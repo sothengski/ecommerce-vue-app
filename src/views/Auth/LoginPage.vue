@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { login } from "@/utils/auth";
+import { savedUserData } from "@/utils/auth";
 import AuthService from "../../services/AuthService";
 import { authState } from "@/utils/authState";
 
@@ -60,7 +60,7 @@ export default {
           // console.log(response); // Debug the full response
           const user = response.data.data;
           this.message = response.data.message;
-          login(user);
+          savedUserData(user);
           authState.isAuthenticated = true;
 
           // alert(`Login successful! ${user.email}`); // Use template literal for the email

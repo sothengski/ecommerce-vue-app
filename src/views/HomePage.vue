@@ -2,20 +2,36 @@
   <div>
     <h1>Welcome to the Home Page</h1>
     <p>
-    At Trendy Threads, we believe fashion is more than just clothing – it's a statement. 
-    Our curated collection offers the perfect blend of style, comfort, and quality to help you express yourself effortlessly.
-  </p>
-  <p>
-    Whether you're looking for casual wear, office attire, or something special for an evening out, 
-    we have everything you need to refresh your wardrobe. Explore our latest collections and find your next favorite outfit today!
-  </p>
-  <router-link to="/products" class="shop-now-btn">Shop Now</router-link>
+      At Trendy Threads, we believe fashion is more than just clothing – it's a
+      statement. Our curated collection offers the perfect blend of style,
+      comfort, and quality to help you express yourself effortlessly.
+    </p>
+    <p>
+      Whether you're looking for casual wear, office attire, or something
+      special for an evening out, we have everything you need to refresh your
+      wardrobe. Explore our latest collections and find your next favorite
+      outfit today!
+    </p>
+    <router-link to="/products" class="shop-now-btn">Shop Now</router-link>
   </div>
+
+  <button @click="logout">Logout</button>
 </template>
 
 <script>
+import { logout } from "@/utils/auth";
+import { authState } from "@/utils/authState";
+
 export default {
   name: "HomePage",
+  methods: {
+    logout() {
+      logout();
+      authState.isAuthenticated = false; // Update the reactive state
+      alert("You have logged out.");
+      this.$router.push("/login");
+    },
+  },
 };
 </script>
 
@@ -55,4 +71,3 @@ export default {
   background-color: #0056b3;
 }
 </style>
-

@@ -2,10 +2,10 @@
   <div class="container">
     <h2>Update User Information</h2>
     <form @submit.prevent="updateUserInfo">
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="userName">Username</label>
         <input type="text" id="userName" v-model="form.userName" required />
-      </div>
+      </div> -->
       <div class="form-group">
         <label for="firstName">First Name</label>
         <input type="text" id="firstName" v-model="form.firstName" required />
@@ -19,12 +19,8 @@
         <input type="tel" id="phone" v-model="form.phone" required />
       </div>
       <div class="form-group">
-        <label for="shippingAddress">Shipping Address</label>
-        <textarea
-          id="shippingAddress"
-          v-model="form.shippingAddress"
-          required
-        ></textarea>
+        <label for="address">Shipping Address</label>
+        <textarea id="address" v-model="form.address" required></textarea>
       </div>
       <div class="form-actions">
         <button type="submit">Update</button>
@@ -35,49 +31,67 @@
 </template>
 
 <script>
+import { getUserData } from "@/utils/auth";
+import AuthService from "../../services/AuthService";
+
 export default {
   data() {
     return {
+      userId: getUserData().id,
       form: {
-        userName: "",
+        // userName: "",
         firstName: "",
         lastName: "",
         phone: "",
-        shippingAddress: "",
+        address: "",
       },
     };
   },
   methods: {
-    async updateUserInfo() {
-      alert(
-        `User updated: FirstName=${this.form.firstName}, LastName=${this.form.lastName}`
-      );
-      // try {
-      //   // Example of an API call to update user information
-      //   const response = await fetch("/api/update-user", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(this.form),
-      //   });
+    async loadUserInfo(userId) {
+      try {
+        const response = await AuthService.getUserDetailbyId(userId);
+        console.log("Server response:", response);
 
-      //   if (response.ok) {
-      //     const result = await response.json();
-      //     alert("User information updated successfully!");
-      //     console.log("Server response:", result);
-      //     this.$router.push("/user-info");
-      //   } else {
-      //     throw new Error("Failed to update user information.");
-      //   }
-      // } catch (error) {
-      //   console.error(error);
-      //   alert("An error occurred while updating user information.");
-      // }
+        this.form = {
+          // userName: response.data.data.userName,
+          firstName: response.data.data.firstName,
+          lastName: response.data.data.lastName,
+          phone: response.data.data.phone,
+          address: response.data.data.address,
+        };
+      } catch (error) {
+        console.error("Error loading user:", error);
+      }
     },
+    async updateUserInfo() {
+      try {
+        const updatedUserInfo = await AuthService.updateUserById(
+          this.userId,
+          this.form
+        ); // API call to update user
+        console.log("Server response:", updatedUserInfo.data);
+
+        // savedUserData(updatedUserInfo.data);
+
+        alert("User information updated successfully!");
+        this.$router.push("/user-info"); // Navigate back to user info page
+      } catch (error) {
+        console.error("Error updating user information:", error);
+        alert("Failed to update user information.");
+      }
+      // alert(
+      //   `User updated: FirstName=${this.form.firstName}, LastName=${this.form.lastName}`
+      // );
+    },
+
     cancelEdit() {
       this.$router.push("/user-info");
     },
+  },
+  async created() {
+    // Load user details when the component is created
+    await this.loadUserInfo(this.userId);
   },
 };
 </script>
@@ -87,8 +101,9 @@ export default {
   padding: 20px;
   background-color: #f9f9f9;
   margin: auto;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .container form {

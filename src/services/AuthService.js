@@ -14,6 +14,16 @@ class AuthService {
     };
     return http.post("/users", updatedData);
   }
+
+  // Get an user data by Id
+  getUserDetailbyId(userId) {
+    return http.get(`/users/${userId}`);
+  }
+
+  // Update an user data by Id
+  updateUserById(userId, data) {
+    return http.put(`/users/${userId}`, data);
+  }
 }
 
 export default new AuthService();
