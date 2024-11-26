@@ -2,12 +2,12 @@
         <div class="container">
       <div class="header">
         <h2>Order List</h2>
-        <button class="add-btn" @click="addNewOrder">Add New Order</button>
+        <!-- <button class="add-btn" @click="addNewOrder">Add New Order</button> -->
       </div>
       <table class="styled-table">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>Order ID</th>
             <th>Order Number</th>
             <th>Total Items</th>
             <th>Total Price</th>
@@ -16,15 +16,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="order in orders" :key="order.id">
-            <td>{{ order.id }}</td>
+          <tr v-for="order in orders" :key="order.orderId">
+            <td>{{ order.orderId }}</td>
             <td>{{ order.orderNumber }}</td>
             <td>{{ order.items.length }}</td>
             <td>{{ order.totalPrice }}</td>
             <td>{{ order.orderStatus }}</td>
             <td>
               <button class="edit-btn" @click="editOrder(order)">Edit</button>
-              <button class="delete-btn" @click="deleteOrder(order.id)">Delete</button>
+              <button class="delete-btn" @click="deleteOrder(order.orderId)">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -57,7 +57,7 @@
         this.$router.push("/orders/add");
       },
       editOrder(order) {
-        this.$router.push(`/orders/edit/${order.id}`);
+        this.$router.push(`/orders/edit/${order.orderId}`);
       },
       async deleteOrder(orderId) {
         const confirmed = confirm("Are you sure you want to delete this order?");

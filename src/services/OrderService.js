@@ -7,9 +7,9 @@ class OrderService {
   }
   
   // Get all orders by UserId
-  // getAllOrders(userId) {
-  //   return http.get(`/orders/users/${userId}`);
-  // }
+  getAllUserOrders(userId) {
+    return http.get(`/orders/users/${userId}`);
+  }
   
   // Get an order by Id
   getOrder(orderId) {
