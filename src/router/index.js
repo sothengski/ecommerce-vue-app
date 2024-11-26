@@ -7,6 +7,7 @@ import CategoriesPage from "@/views/Category/CategoriesPage.vue";
 import ProductsPage from "@/views/Product/ProductsPage.vue";
 import OrdersPage from "@/views/Order/OrdersPage.vue";
 import OrdersList from "@/views/Order/OrdersList.vue";
+import UpdateOrders from "@/views/Order/UpdateOrders.vue";
 import Dashboard from "@/views/Dashboard.vue";
 import RoleList from "@/views/Role/RoleList.vue";
 import UserInfo from "@/views/UserInfo/UserInfo.vue";
@@ -88,18 +89,18 @@ const routes = [
             component: OrdersList,
             meta: { requiresAuth: true },
           },
-          // {
-          //   path: "/orders/add",
-          //   name: "AddOrder",
-          //   component: UpdateOrders, // Component for adding an order
-          //   meta: { requiresAuth: true },
-          // },
-          // {
-          //   path: "/orders/edit/:id",
-          //   name: "EditOrder",
-          //   component: UpdateOrders, // Component for editing an order
-          //   meta: { requiresAuth: true },
-          // },
+          {
+            path: "/order-management/add",
+            name: "AddOrder",
+            component: UpdateOrders, // Component for adding an order
+            meta: { requiresAuth: true },
+          },
+          {
+            path: "/order-management/edit/:orderId",
+            name: "EditOrder",
+            component: UpdateOrders, // Component for editing an order
+            meta: { requiresAuth: true },
+          },
         ],
     },
     ],

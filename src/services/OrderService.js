@@ -24,12 +24,12 @@ class OrderService {
 
   // Update an order
   updateOrder(orderId, data) {
-    return http.put(`/roles/${orderId}`, data);
+    return http.put(`/orders/${orderId}`, data);
   }
 
   // Delete an order
   deleteOrder(orderId) {
-    return http.delete(`/roles/${orderId}`);
+    return http.delete(`/orders/${orderId}`);
   }
 }
 
