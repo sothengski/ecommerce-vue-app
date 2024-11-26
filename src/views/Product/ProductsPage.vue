@@ -1,40 +1,67 @@
 <template>
-  <div>
-    <h1>Products</h1>
-    <div class="products-container">
-      <div v-for="product in products" :key="product.id" class="product-card">
-        <!-- Main Image -->
-        <img :src="product.images[0]" :alt="product.name" class="product-image" />
+  <div class="page-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>Filter by Category</h2>
+      <ul>
+        <li v-for="category in categories" :key="category.id">
+          <label>
+            <input
+              type="checkbox"
+              :value="category.id"
+              v-model="selectedCategories"
+            />
+            {{ category.name }}
+          </label>
+        </li>
+      </ul>
+    </aside>
 
-        <!-- Product Details -->
-        <div class="product-details">
-          <h2>{{ product.name }}</h2>
-          <p>{{ product.description }}</p>
-          <p><strong>Brand:</strong> {{ product.brand }}</p>
-          <p><strong>Price:</strong> ${{ product.price }}</p>
-          <p><strong>Stock:</strong> {{ product.stock }}</p>
-          <p><strong>Category:</strong> {{ product.category.name }}</p>
+    <!-- Main Content -->
+    <main class="main-content">
+      <h1>Products</h1>
+      <div class="products-container">
+        <div
+          v-for="product in filteredProducts"
+          :key="product.id"
+          class="product-card"
+        >
+          <!-- Main Image -->
+          <img
+            :src="product.images[0]"
+            :alt="product.name"
+            class="product-image"
+          />
 
-          <!-- Sizes -->
-          <p><strong>Sizes:</strong></p>
-          <ul class="sizes-list">
-            <li v-for="size in product.size" :key="size">{{ size }}</li>
-          </ul>
+          <!-- Product Details -->
+          <div class="product-details">
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.description }}</p>
+            <p><strong>Brand:</strong> {{ product.brand }}</p>
+            <p><strong>Price:</strong> ${{ product.price }}</p>
+            <p><strong>Stock:</strong> {{ product.stock }}</p>
+            <p><strong>Category:</strong> {{ product.category.name }}</p>
 
-          <!-- Colors -->
-          <p><strong>Colors:</strong></p>
-          <ul class="colors-list">
-            <li v-for="color in product.color" :key="color" class="color-box" :style="{ backgroundColor: color.toLowerCase() }"></li>
-          </ul>
+            <!-- Sizes -->
+            <p><strong>Sizes:</strong></p>
+            <ul class="sizes-list">
+              <li v-for="size in product.size" :key="size">{{ size }}</li>
+            </ul>
 
-          <!-- Images -->
-          <p><strong>More Images:</strong></p>
-          <div class="additional-images">
-            <img v-for="(image, index) in product.images" :key="index" :src="image" :alt="product.name" class="additional-image" />
+            <!-- Colors -->
+            <p><strong>Colors:</strong></p>
+            <ul class="colors-list">
+              <li
+                v-for="color in product.color"
+                :key="color"
+                class="color-box"
+                :style="{ backgroundColor: color.toLowerCase() }"
+              ></li>
+            </ul>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </template>
 
@@ -46,10 +73,24 @@ export default {
   data() {
     return {
       products: [], // Holds the list of products
+      categories: [], // Holds the list of categories
+      selectedCategories: [], // Tracks selected category IDs
     };
   },
   created() {
     this.fetchProducts();
+    this.fetchCategories();
+  },
+  computed: {
+    // Filter products based on selected categories
+    filteredProducts() {
+      if (this.selectedCategories.length === 0) {
+        return this.products; // Show all products if no category is selected
+      }
+      return this.products.filter((product) =>
+        this.selectedCategories.includes(product.category.id)
+      );
+    },
   },
   methods: {
     async fetchProducts() {
@@ -64,13 +105,70 @@ export default {
         console.error("Error fetching products:", error);
       }
     },
+    async fetchCategories() {
+      try {
+        const response = await axios.get("http://localhost:8080/api/categories");
+        if (response.data.success) {
+          this.categories = response.data.data; // Assign the 'data' array to categories
+        } else {
+          console.error(response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
-/* Page Header */
-h1 {
+/* Layout */
+.page-container {
+  display: flex;
+  align-items: flex-start;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  position: sticky;
+  top: 0; 
+  height: 100vh; 
+  overflow-y: auto; 
+}
+
+.sidebar h2 {
+  margin-top: 65px;
+  margin-bottom: 15px;
+  font-size: 24px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+}
+
+.sidebar label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.main-content h1 {
   text-align: center;
   margin-bottom: 20px;
 }
@@ -97,7 +195,7 @@ h1 {
 /* Product Image */
 .product-image {
   width: 100%;
-  height: 200px;
+  aspect-ratio: 1;
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 10px;
@@ -135,19 +233,5 @@ h1 {
   height: 20px;
   border: 1px solid #ccc;
   border-radius: 50%;
-}
-
-/* Additional Images */
-.additional-images {
-  display: flex;
-  gap: 5px;
-  margin-top: 10px;
-}
-
-.additional-image {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 5px;
 }
 </style>
