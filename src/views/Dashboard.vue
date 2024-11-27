@@ -10,7 +10,7 @@
           <router-link to="/role-list">Role Management</router-link>
         </li>
         <li>
-          <router-link to="/user-management">User Management</router-link>
+          <router-link to="/user-list">User Management</router-link>
         </li>
         <li>
           <router-link to="/category-management"

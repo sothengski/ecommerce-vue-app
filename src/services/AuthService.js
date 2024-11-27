@@ -15,6 +15,11 @@ class AuthService {
     return http.post("/users", updatedData);
   }
 
+  // Get all users data
+  getAllUsers() {
+    return http.get("/users");
+  }
+
   // Get an user data by Id
   getUserDetailbyId(userId) {
     return http.get(`/users/${userId}`);
@@ -23,6 +28,11 @@ class AuthService {
   // Update an user data by Id
   updateUserById(userId, data) {
     return http.put(`/users/${userId}`, data);
+  }
+
+  // Delete a user
+  deleteUser(userId) {
+    return http.delete(`/users/${userId}`);
   }
 }
 

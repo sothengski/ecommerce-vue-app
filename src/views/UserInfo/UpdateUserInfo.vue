@@ -47,6 +47,18 @@ export default {
       },
     };
   },
+
+  async created() {
+    // Load user details when the component is created
+    await this.loadUserInfo(this.userId);
+
+    // Check if editing an existing role
+    // const roleId = this.$route.params.id;
+    // if (roleId) {
+    //   this.isEdit = true;
+    //   this.loadRole(roleId);
+    // }
+  },
   methods: {
     async loadUserInfo(userId) {
       try {
@@ -88,10 +100,6 @@ export default {
     cancelEdit() {
       this.$router.push("/user-info");
     },
-  },
-  async created() {
-    // Load user details when the component is created
-    await this.loadUserInfo(this.userId);
   },
 };
 </script>

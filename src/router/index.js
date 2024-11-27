@@ -13,6 +13,7 @@ import UpdateUserInfo from "@/views/UserInfo/UpdateUserInfo.vue";
 import { isAuthenticated } from "@/utils/auth";
 import AddOrUpdateRole from "@/views/Role/AddOrUpdateRole.vue";
 import RolePage from "@/views/Role/RolePage.vue";
+import UserList from "@/views/UserInfo/UserList.vue";
 
 // Simulating authentication state
 // const isAuthenticated = () => !!localStorage.getItem("user-token");
@@ -81,6 +82,18 @@ const routes = [
             meta: { requiresAuth: true },
           },
         ],
+      },
+      {
+        path: "/user-list",
+        name: "UpdateUser",
+        component: UserList,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "/user-list/edit/:id",
+        name: "UserList",
+        component: UpdateUserInfo,
+        meta: { requiresAuth: true },
       },
 
       // {
