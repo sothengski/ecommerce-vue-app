@@ -12,7 +12,7 @@
         <nav class="nav-links">
           <ul class="nav-left">
             <li><router-link to="/">Home</router-link></li>
-            <li><router-link to="/categories">Categories</router-link></li>
+            <!-- <li><router-link to="/categories">Categories</router-link></li> -->
             <li><router-link to="/products">Products</router-link></li>
           </ul>
         </nav>
