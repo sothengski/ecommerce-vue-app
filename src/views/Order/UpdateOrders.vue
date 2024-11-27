@@ -12,7 +12,7 @@
           />
         </div>
   
-        <!-- <div class="form-group">
+        <div class="form-group">
           <label for="totalItems">Total Items:</label>
           <input
             type="number"
@@ -21,8 +21,8 @@
             @input="recalculateTotalPrice"
             min="0"
           />
-        </div> -->
-<!--   
+        </div>
+  
         <div class="form-group">
           <label for="totalPrice">Total Price:</label>
           <input
@@ -31,14 +31,14 @@
             :value="form.totalPrice"
             disabled
           />
-        </div> -->
+        </div>
   
         <div class="form-group">
           <label for="orderStatus">Order Status:</label>
           <select id="orderStatus" v-model="form.orderStatus">
             <option value="Pending">Pending</option>
             <option value="Processing">Processing</option>
-            <option value="Completed">Completed</option>
+            <option value="Shipped">Shipped</option>
             <option value="Cancelled">Cancelled</option>
           </select>
         </div>
@@ -60,8 +60,8 @@
         form: {
           orderId: null, // Order ID for updates
           orderNumber: "",
-        //   totalItems: 0, 
-        //   totalPrice: 0,
+          totalItems: 0, 
+          totalPrice: 0,
           orderStatus: "Pending",
         },
       };
@@ -88,13 +88,14 @@
           const response = await OrderService.getOrder(orderId);
           console.log("Order response data:", response.data); // Debugging API response
           const order = response.data;
+          console.log("Order status printout:",  order.data.orderStatus);
           this.form = {
-            ...this.form, // Preserve existing form structure
-            orderId: order.orderId || null,
-            orderNumber: order.orderNumber || "", // Ensure fallback values
-            totalItems: order.totalQuantity || 0,
-            totalPrice: order.totalPrice || 0,
-            orderStatus: order.orderStatus || "Pending",
+            orderId: order.data.orderId || null,
+            orderNumber: order.data.orderNumber || "Wrong path", // Ensure fallback values
+            totalItems: order.data.totalQuantity || 0,
+            totalPrice: order.data.totalPrice || 0,
+            orderStatus: order.data.orderStatus || "Pending",
+            
           };
         } catch (error) {
           console.error("Error loading order:", error);
@@ -102,16 +103,16 @@
           
         }
       },
-    //   recalculateTotalPrice() {
-    //     // Example calculation: each item costs $10
-    //     const pricePerItem = 10;
-    //     this.form.totalPrice = this.form.totalItems * pricePerItem;
-    //   },
+      recalculateTotalPrice() {
+        // Example calculation: each item costs $10
+        const pricePerItem = 10;
+        this.form.totalPrice = this.form.totalItems * pricePerItem;
+      },
       async updateOrder() {
         try {
           await OrderService.updateOrder(this.form.orderId, {
-            // totalItems: this.form.totalItems,
-            // totalPrice: this.form.totalPrice,
+            totalItems: this.form.totalItems,
+            totalPrice: this.form.totalPrice,
             orderStatus: this.form.orderStatus,
           });
           alert("Order updated successfully!");
