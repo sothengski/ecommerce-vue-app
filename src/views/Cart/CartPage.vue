@@ -113,8 +113,7 @@ export default {
     async removeItem(item) {
       try {
         const response = await axios.delete(
-          `http://localhost:8080/api/carts/${this.cartId}/remove-item`,
-          null, // No body needed for this request, parameters are in the URL
+          `http://localhost:8080/api/carts/${this.cartId}/remove-item`, // No body needed for this request, parameters are in the URL
           {
             params: {
               itemId: item.id,
