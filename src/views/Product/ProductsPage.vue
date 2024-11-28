@@ -25,36 +25,31 @@
           </label>
         </li>
       </ul>
-      <!-- Price Range Filter -->
-      <div class="price-filter">
-        <h3>Filter by Price</h3>
-        <div class="price-content">
-          <div>
-            <label>Min</label>
-            <p>{{ formatPrice(priceRange.min) }}</p>
-          </div>
-          <div>
-            <label>Max</label>
-            <p>{{ formatPrice(priceRange.max) }}</p>
-          </div>
+      <!-- Price Range -->
+      <h3>Filter by Price</h3>
+      <div class="price-range-container">
+        <div class="price-range-labels">
+          <span>${{ Number(priceRange.min).toFixed(2) }}</span>
+          <span>${{ Number(priceRange.max).toFixed(2) }}</span>
         </div>
-        <div class="range-slider">
-          <div class="range-fill" :style="{ width: ((priceRange.max - priceRange.min) / (maxPrice - minPrice)) * 100 + '%' }"></div>
-          <input 
+        <div class="price-range-sliders">
+          <input
             type="range"
             v-model="priceRange.min"
-            class="min-price"
-            :min="minPrice"
-            :max="maxPrice"
-            :step="step"
+            min="10"
+            max="1990"
+            step="10"
+            class="price-range-slider"
+            id="minPrice"
           />
           <input
             type="range"
             v-model="priceRange.max"
-            class="max-price"
-            :min="minPrice"
-            :max="maxPrice"
-            :step="step"
+            min="10"
+            max="1990"
+            step="10"
+            class="price-range-slider"
+            id="maxPrice"
           />
         </div>
       </div>
@@ -118,13 +113,7 @@ export default {
       categories: [], // Holds the list of categories
       selectedCategories: [], // Tracks selected category IDs
       searchQuery: "",
-      priceRange: {
-        min: 10,
-        max: 1990,
-      },
-      minPrice: 10, // Starting price range
-      maxPrice: 1990, // Max price
-      step: 10, // Slider step
+      priceRange: { min: 10.0, max: 1990.0 },
     };
   },
   created() {
@@ -133,9 +122,8 @@ export default {
   },
   computed: {
     // Filter products based on selected categories
-    filteredProducts() {
+      filteredProducts() {
       let filtered = this.products;
-
       // Filter by categories if any are selected
       if (this.selectedCategories.length > 0) {
         filtered = filtered.filter((product) =>
@@ -151,11 +139,9 @@ export default {
       }
 
       // Filter by price range
-      filtered = filtered.filter(
-        (product) =>
-          product.price >= this.priceRange.min && product.price <= this.priceRange.max
+      filtered = filtered.filter((product) =>
+        product.price >= this.priceRange.min && product.price <= this.priceRange.max
       );
-
 
       return filtered;
     },
@@ -185,14 +171,6 @@ export default {
         console.error("Error fetching categories:", error);
       }
     },
-    // Method to format price as currency
-    formatPrice(price) {
-      const numPrice = parseFloat(price);
-      if (isNaN(numPrice)) {
-        return "$0.00";  // Return a fallback if it's not a number
-      }
-      return `$${numPrice.toFixed(2)}`;
-    }
   },
 };
 </script>
@@ -232,11 +210,11 @@ export default {
 .search-input {
   width: 100%;
   padding: 12px 15px;
-  font-size: 16px;
+  font-size: 14px;
   border: 1px solid #ddd;
   border-radius: 8px;
   outline: none;
-  transition: all 0.3s ease;
+  transition: border-color 0.3s;
 }
 
 .search-input:focus {
@@ -267,60 +245,76 @@ export default {
   font-size: 16px;
 }
 
-/* Price Range Filter */
-.range-slider {
-  width: 100%;
-  position: relative;
-  margin: 15px 0;
+/* Price Range Section */
+.price-range-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.range-fill {
-  height: 6px;
-  background-color: aquamarine;
-  position: absolute;
-  z-index: 1;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-}
-
-input[type="range"] {
-  -webkit-appearance: none;
-  width: 100%;
-  background: transparent;
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-input[type="range"]::-webkit-slider-thumb,
-input[type="range"]::-moz-range-thumb {
-  -webkit-appearance: none;
-  height: 15px;
-  width: 15px;
-  border-radius: 50%;
-  background-color: aquamarine;
-  cursor: pointer;
-  margin-top: -5px;
-  position: relative;
-  z-index: 1;
-}
-
-input[type="range"]:focus {
-  outline: none;
-}
-
-/* Price content styling */
-.price-content {
+.price-range-labels {
   display: flex;
   justify-content: space-between;
-  font-size: 16px;
-  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  font-size: 18px;
 }
 
-.price-content p {
-  font-weight: 600;
+.price-range-sliders {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.price-range-slider {
+  width: 100%;
+  height: 5px;
+  background: #ddd;
+  border-radius: 5px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.price-range-slider::-webkit-slider-runnable-track {
+  height: 5px;
+  background: #ddd;
+  border-radius: 5px;
+}
+
+.price-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background: #000000;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.price-range-slider:focus::-webkit-slider-thumb {
+  background-color: #000000;
+}
+
+.price-range-slider::-moz-range-track {
+  height: 5px;
+  background: #ddd;
+  border-radius: 5px;
+}
+
+.price-range-slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  background: #007bff;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.price-range-slider:focus::-moz-range-thumb {
+  background-color: #0056b3;
 }
 
 /* Main Content */
@@ -351,6 +345,11 @@ input[type="range"]:focus {
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Product Image */
