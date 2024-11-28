@@ -25,6 +25,39 @@
           </label>
         </li>
       </ul>
+      <!-- Price Range Filter -->
+      <div class="price-filter">
+        <h3>Filter by Price</h3>
+        <div class="price-content">
+          <div>
+            <label>Min</label>
+            <p>{{ formatPrice(priceRange.min) }}</p>
+          </div>
+          <div>
+            <label>Max</label>
+            <p>{{ formatPrice(priceRange.max) }}</p>
+          </div>
+        </div>
+        <div class="range-slider">
+          <div class="range-fill" :style="{ width: ((priceRange.max - priceRange.min) / (maxPrice - minPrice)) * 100 + '%' }"></div>
+          <input 
+            type="range"
+            v-model="priceRange.min"
+            class="min-price"
+            :min="minPrice"
+            :max="maxPrice"
+            :step="step"
+          />
+          <input
+            type="range"
+            v-model="priceRange.max"
+            class="max-price"
+            :min="minPrice"
+            :max="maxPrice"
+            :step="step"
+          />
+        </div>
+      </div>
     </aside>
     <!-- Main Content -->
     <main class="main-content">
@@ -85,6 +118,13 @@ export default {
       categories: [], // Holds the list of categories
       selectedCategories: [], // Tracks selected category IDs
       searchQuery: "",
+      priceRange: {
+        min: 10,
+        max: 1990,
+      },
+      minPrice: 10, // Starting price range
+      maxPrice: 1990, // Max price
+      step: 10, // Slider step
     };
   },
   created() {
@@ -109,6 +149,13 @@ export default {
           product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
         );
       }
+
+      // Filter by price range
+      filtered = filtered.filter(
+        (product) =>
+          product.price >= this.priceRange.min && product.price <= this.priceRange.max
+      );
+
 
       return filtered;
     },
@@ -138,6 +185,14 @@ export default {
         console.error("Error fetching categories:", error);
       }
     },
+    // Method to format price as currency
+    formatPrice(price) {
+      const numPrice = parseFloat(price);
+      if (isNaN(numPrice)) {
+        return "$0.00";  // Return a fallback if it's not a number
+      }
+      return `$${numPrice.toFixed(2)}`;
+    }
   },
 };
 </script>
@@ -160,15 +215,10 @@ export default {
   height: 100vh; 
   overflow-y: auto; 
 }
+
+/* Sidebar Product Name Search */
 .sidebar h2 {
   margin-top: 65px;
-  margin-bottom: 15px;
-  font-size: 20px;
-  color: #333;
-}
-
-.sidebar h3 {
-  margin-top: 30px;
   margin-bottom: 15px;
   font-size: 20px;
   color: #333;
@@ -193,6 +243,14 @@ export default {
   border-color: #007bff;
 }
 
+/* Sidebar Category Filter */
+.sidebar h3 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #333;
+}
+
 .sidebar ul {
   list-style: none;
   padding: 0;
@@ -207,6 +265,62 @@ export default {
   align-items: center;
   gap: 10px;
   font-size: 16px;
+}
+
+/* Price Range Filter */
+.range-slider {
+  width: 100%;
+  position: relative;
+  margin: 15px 0;
+}
+
+.range-fill {
+  height: 6px;
+  background-color: aquamarine;
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+input[type="range"]::-webkit-slider-thumb,
+input[type="range"]::-moz-range-thumb {
+  -webkit-appearance: none;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  background-color: aquamarine;
+  cursor: pointer;
+  margin-top: -5px;
+  position: relative;
+  z-index: 1;
+}
+
+input[type="range"]:focus {
+  outline: none;
+}
+
+/* Price content styling */
+.price-content {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.price-content p {
+  font-weight: 600;
 }
 
 /* Main Content */
