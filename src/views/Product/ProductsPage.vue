@@ -2,7 +2,17 @@
   <div class="page-container">
     <!-- Sidebar -->
     <aside class="sidebar">
-      <h2>Filter by Category</h2>
+      <!-- Search by Product Name -->
+    <div class="search-container">
+      <h2>Search Product Name</h2>
+        <input
+          type="text"
+          v-model="searchQuery"
+          class="search-input"
+        />
+      </div>
+      <!-- Search by Category -->
+      <h3>Filter by Category</h3>
       <ul>
         <li v-for="category in categories" :key="category.id">
           <label>
@@ -16,7 +26,6 @@
         </li>
       </ul>
     </aside>
-
     <!-- Main Content -->
     <main class="main-content">
       <h1>Products</h1>
@@ -75,6 +84,7 @@ export default {
       products: [], // Holds the list of products
       categories: [], // Holds the list of categories
       selectedCategories: [], // Tracks selected category IDs
+      searchQuery: "",
     };
   },
   created() {
@@ -84,12 +94,23 @@ export default {
   computed: {
     // Filter products based on selected categories
     filteredProducts() {
-      if (this.selectedCategories.length === 0) {
-        return this.products; // Show all products if no category is selected
+      let filtered = this.products;
+
+      // Filter by categories if any are selected
+      if (this.selectedCategories.length > 0) {
+        filtered = filtered.filter((product) =>
+          this.selectedCategories.includes(product.category.id)
+        );
       }
-      return this.products.filter((product) =>
-        this.selectedCategories.includes(product.category.id)
-      );
+
+      // Filter by product name based on the search query
+      if (this.searchQuery) {
+        filtered = filtered.filter((product) =>
+          product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      }
+
+      return filtered;
     },
   },
   methods: {
@@ -139,11 +160,37 @@ export default {
   height: 100vh; 
   overflow-y: auto; 
 }
-
 .sidebar h2 {
   margin-top: 65px;
   margin-bottom: 15px;
-  font-size: 24px;
+  font-size: 20px;
+  color: #333;
+}
+
+.sidebar h3 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #333;
+}
+
+.sidebar .search-container {
+  margin-top: 20px;
+  margin-right: 30px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #007bff;
 }
 
 .sidebar ul {
@@ -159,7 +206,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 /* Main Content */
