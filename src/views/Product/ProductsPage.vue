@@ -176,11 +176,60 @@ export default {
         console.error("Error fetching categories:", error);
       }
     },
-    // Add to Cart method (to be implemented)
-    addToCart(product) {
-      console.log('Adding product to cart:', product);
-      // You can add your cart logic here (e.g., update a cart array, show notification, etc.)
-    }
+ // Add to Cart method
+ async addToCart(product) {
+      // Step 1: Get the logged-in user's ID and cart ID from local storage
+      const userData = JSON.parse(localStorage.getItem("user"));
+      if (!userData || !userData.id) {
+        console.error("User not logged in.");
+        return;
+      }
+      
+      const cartId = await this.getUserCartId(userData.id);
+      if (!cartId) {
+        console.error("User's cart not found.");
+        return;
+      }
+      
+      // Step 2: Prepare the request payload
+      const payload = {
+        productId: product.id,
+        quantity: 1, // Default quantity (can be adjusted in cart based on input from user)
+      };
+      
+      // Step 3: Send the POST request to add the item to the cart
+      try {
+        const response = await axios.post(
+          `http://localhost:8080/api/carts/${cartId}/add-item`,
+          payload
+        );
+        
+        if (response.data.success) {
+          console.log("Item added to cart:", response.data);
+          // You can also show a notification or update UI here
+        } else {
+          console.error("Failed to add item to cart:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Error adding item to cart:", error);
+      }
+    },
+    
+    // Get User's Cart ID
+    async getUserCartId(userId) {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/carts/users/${userId}`);
+        if (response.data.success) {
+          return response.data.data.id;
+        } else {
+          console.error("Error fetching user's cart:", response.data.message);
+          return null;
+        }
+      } catch (error) {
+        console.error("Error fetching user's cart:", error);
+        return null;
+      }
+    },
   },
 };
 </script>

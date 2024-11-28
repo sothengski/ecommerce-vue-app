@@ -60,6 +60,7 @@ export default {
           // console.log(response); // Debug the full response
           const user = response.data.data;
           this.message = response.data.message;
+          console.log(user);
           savedUserData(user);
           authState.isAuthenticated = true;
 
