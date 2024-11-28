@@ -95,6 +95,11 @@
                 :style="{ backgroundColor: color.toLowerCase() }"
               ></li>
             </ul>
+
+            <!-- Add to Cart Button -->
+            <button @click="addToCart(product)" class="add-to-cart-btn">
+              Add to Cart
+            </button>
           </div>
         </div>
       </div>
@@ -171,6 +176,11 @@ export default {
         console.error("Error fetching categories:", error);
       }
     },
+    // Add to Cart method (to be implemented)
+    addToCart(product) {
+      console.log('Adding product to cart:', product);
+      // You can add your cart logic here (e.g., update a cart array, show notification, etc.)
+    }
   },
 };
 </script>
@@ -259,7 +269,7 @@ export default {
   font-size: 14px;
   font-weight: bold;
   color: #333;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .price-range-sliders {
@@ -294,27 +304,27 @@ export default {
   transition: background-color 0.3s;
 }
 
-.price-range-slider:focus::-webkit-slider-thumb {
-  background-color: #000000;
-}
-
-.price-range-slider::-moz-range-track {
-  height: 5px;
-  background: #ddd;
-  border-radius: 5px;
-}
-
-.price-range-slider::-moz-range-thumb {
-  width: 15px;
-  height: 15px;
-  background: #007bff;
-  border-radius: 50%;
+/* Button Styles */
+.add-to-cart-btn {
+  background-color: darkred;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  width: 100%;
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-.price-range-slider:focus::-moz-range-thumb {
-  background-color: #0056b3;
+.add-to-cart-btn:hover {
+  background-color: #218838; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.add-to-cart-btn:focus {
+  outline: none;
 }
 
 /* Main Content */
@@ -395,3 +405,4 @@ export default {
   border-radius: 50%;
 }
 </style>
+
