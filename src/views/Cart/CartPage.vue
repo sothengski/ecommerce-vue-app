@@ -33,7 +33,9 @@
       <!-- Cart Summary -->
       <div class="cart-summary">
         <p><strong>Total Price: </strong> ${{ totalPrice.toFixed(2) }}</p>
-        <button @click="checkout" class="checkout-btn">Checkout</button>
+        <button @click="checkoutCart" class="checkout-button">Checkout</button>
+        <!-- Success/Error Message -->
+        <p v-if="message">{{ message }}</p>
       </div>
     </div>
   </div>
@@ -135,9 +137,19 @@ export default {
       }
     },
 
-    checkout() {
-      // Placeholder for checkout functionality
-      console.log("Proceeding to checkout");
+    async checkoutCart() {
+      try {
+        const response = await axios.post(`http://localhost:8080/api/carts/${this.cartId}/checkout`);
+        if (response.data.success) {
+          alert('Order Placed Successfully');
+          window.location.reload();
+        } else {
+          alert('Failed to place the order.');
+        }
+      } catch (error) {
+        console.error("Error placing the order:", error);
+        this.message = "An error occurred while placing the order.";
+      }
     },
   },
 };
@@ -213,7 +225,7 @@ export default {
   text-align: right;
 }
 
-.checkout-btn {
+.checkout-button {
   background-color: green;
   color: white;
   padding: 10px 20px;
