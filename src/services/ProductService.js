@@ -7,7 +7,7 @@ class ProductService {
   }
   
   // Get a product by Id
-  getProductById(productId) {
+  getProduct(productId) {
     return http.get(`/products/${productId}`);
   }
   

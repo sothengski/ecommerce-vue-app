@@ -49,10 +49,30 @@ methods: {
       const response = await ProductService.getAllProducts();
       this.products = response.data.data; // Adjust based on API response structure
     } catch (error) {
-      console.error("Error fetching orders:", error);
-      alert("Failed to fetch orders.");
+      console.error("Error fetching products:", error);
+      alert("Failed to fetch products.");
     }
   },
+  addNewProduct() {
+      this.$router.push("/product-management/add");
+    },
+    editProduct(product) {
+      this.$router.push(`/product-management/edit/${product.productId}`);
+    },
+    async deleteProduct(productId) {
+        console.log("Deleting product with ID:", productId);
+      const confirmed = confirm("Are you sure you want to delete this product?");
+      if (confirmed) {
+        try {
+          await ProductService.deleteProduct(productId); 
+          alert("Product deleted successfully.");
+          this.fetchProducts(); // Refresh the list after deletion
+        } catch (error) {
+          console.error("Error deleting product:", error);
+          alert("Failed to delete the product.");
+        }
+      }
+    },
 },
 created() {
   this.fetchProducts(); // Fetch products on component creation
