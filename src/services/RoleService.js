@@ -2,8 +2,8 @@ import http from "../http-common";
 
 class RoleService {
   // Get all roles data
-  getAllRoles(data) {
-    return http.get("/roles", data);
+  getAllRoles() {
+    return http.get("/roles");
   }
 
   // Get a role data by Id

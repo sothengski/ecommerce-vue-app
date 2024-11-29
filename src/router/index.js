@@ -21,6 +21,8 @@ import ProductsPage2 from "@/views/Product/ProductsPage2.vue";
 import ProductsList from "@/views/Product/ProductsList.vue";
 import UpdateProducts from "@/views/Product/UpdateProducts.vue";
 import AddOrUpdateUser from "@/views/UserInfo/AddOrUpdateUser.vue";
+import AddOrUpdateCategory from "@/views/Category/AddOrUpdateCategory.vue";
+import CategoryList from "@/views/Category/CategoryList.vue";
 
 // Simulating authentication state
 // const isAuthenticated = () => !!localStorage.getItem("user-token");
@@ -29,7 +31,6 @@ const routes = [
   { path: "/", name: "Home", component: HomePage },
   { path: "/login", name: "Login", component: LoginPage },
   { path: "/register", name: "Register", component: RegisterPage },
-  { path: "/categories", name: "Categories", component: CategoriesPage },
   { path: "/products", name: "Products", component: ProductsPage },
   {
     path: "/cart",
@@ -176,6 +177,35 @@ const routes = [
         ],
       },
       // Product Module
+
+      // Category Module
+      {
+        path: "/categories-page",
+        name: "CategoriesPage",
+        component: CategoriesPage,
+        redirect: "/category-list", // Default to Category list
+        children: [
+          {
+            path: "/category-list",
+            name: "CategoryList",
+            component: CategoryList,
+            meta: { requiresAuth: true },
+          },
+          {
+            path: "/category-list/add",
+            name: "AddCategory",
+            component: AddOrUpdateCategory,
+            meta: { requiresAuth: true },
+          },
+          {
+            path: "/category-list/edit/:id",
+            name: "UpdateCategory",
+            component: AddOrUpdateCategory,
+            meta: { requiresAuth: true },
+          },
+        ],
+      },
+      // Category Module
     ],
   },
 ];

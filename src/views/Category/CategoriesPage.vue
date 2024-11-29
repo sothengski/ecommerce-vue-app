@@ -1,60 +1,60 @@
 <template>
-  <div>
-    <h1>Categories</h1>
-    <ul>
-      <li v-for="category in categories" :key="category.id">
-        {{ category.name }}
-      </li>
-    </ul>
+  <div class="container">
+    <router-view />
   </div>
 </template>
 
-<script>
-import axios from "axios";
-
-export default {
-  name: "CategoryPage",
-  data() {
-    return {
-      categories: [], // Holds the list of categories
-    };
-  },
-  created() {
-    this.fetchCategories();
-  },
-  methods: {
-    async fetchCategories() {
-      try {
-        const response = await axios.get("http://localhost:8080/api/categories");
-        if (response.data.success) {
-          this.categories = response.data.data; // Assign the 'data' array to categories
-        } else {
-          console.error(response.data.message);
-        }
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    },
-  },
-};
-</script>
+<script></script>
 
 <style scoped>
-h1 {
-  text-align: center;
+.page {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
 }
 
-ul {
-  list-style-type: none;
+/* Layout */
+.layout {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* Left Tab Bar */
+.tab-bar {
+  width: 30%;
+  background-color: #f4f4f4;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+}
+
+.tab-bar ul {
+  list-style: none;
   padding: 0;
 }
 
-li {
+.tab-bar li {
+  margin: 10px 0;
+}
+
+.tab-bar li a {
+  display: block;
   padding: 10px;
-  background: #f9f9f9;
-  margin-bottom: 5px;
-  border: 1px solid #ddd;
+  background-color: #e9ecef;
   border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  color: #000;
+}
+
+.tab-bar li a.router-link-active {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Right Content Area */
+.content {
+  width: 70%;
+  padding: 20px;
 }
 </style>
-
