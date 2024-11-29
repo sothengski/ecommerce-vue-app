@@ -15,6 +15,8 @@ import UpdateUserInfo from "@/views/UserInfo/UpdateUserInfo.vue";
 import { isAuthenticated } from "@/utils/auth";
 import AddOrUpdateRole from "@/views/Role/AddOrUpdateRole.vue";
 import RolePage from "@/views/Role/RolePage.vue";
+import ProductsList from "@/views/Product/ProductsList.vue";
+import ProductsPage2 from "@/views/Product/ProductsPage2.vue";
 
 // Simulating authentication state
 // const isAuthenticated = () => !!localStorage.getItem("user-token");
@@ -102,7 +104,22 @@ const routes = [
             meta: { requiresAuth: true },
           },
         ],
-    },
+      },
+      {
+        path: "/productspage2",
+        name: "ProductsPage2",
+        component: ProductsPage2,
+        meta: { requiresAuth: true },
+        redirect: "/product-management", // Default to product list
+        children: [
+          {
+            path: "/product-management",
+            name: "ProductsList",
+            component: ProductsList,
+            meta: { requiresAuth: true },
+          }
+        ],
+      },
     ],
   },
 ];
