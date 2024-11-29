@@ -105,7 +105,7 @@ export default {
   border: 1px solid #ddd;
   border-radius: 10px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 1000px;
+  /* max-width: 1000px; */
 }
 
 .header {

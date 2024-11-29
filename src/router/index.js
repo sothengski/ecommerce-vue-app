@@ -39,22 +39,26 @@ const routes = [
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
-    redirect: "/user-info", // Redirect to User Information by default
+    redirect: "/profile-info", // Redirect to Profile Information by default
     children: [
+      // Profile Module
       {
-        path: "/user-info",
-        name: "UserInfo",
+        path: "/profile-info",
+        name: "ProfileInfo",
         component: UserInfo,
         meta: { requiresAuth: true },
       },
       {
-        path: "/user-info/edit",
-        name: "UpdateUserInfo",
+        path: "/profile-info/edit/:userId",
+        name: "UpdateProfileInfo",
         component: UpdateUserInfo,
         meta: { requiresAuth: true },
       },
+      // Profile Module
+
+      // Role Module
       {
-        path: "/rolepage",
+        path: "/roles-page",
         name: "RolePage",
         component: RolePage,
         meta: { requiresAuth: true },
@@ -80,11 +84,21 @@ const routes = [
           },
         ],
       },
+      // Role Module
+
+      // User Module
       {
-        path: "/user-list",
+        path: "/users-page",
         name: "UpdateUser",
         component: UserList,
+        redirect: "/user-list", // Default to users list
         children: [
+          {
+            path: "/user-list",
+            name: "UsersList",
+            component: UserList,
+            meta: { requiresAuth: true },
+          },
           {
             path: "/user-list/edit/:id",
             name: "UserList",
@@ -92,60 +106,67 @@ const routes = [
           },
         ],
       },
+      // User Module
+
+      // Order Module
       {
-        path: "/orderspage",
+        path: "/orders-page",
         name: "OrdersPage",
         component: OrdersPage,
         meta: { requiresAuth: true },
-        redirect: "/order-management", // Default to orders list
+        redirect: "/order-list", // Default to orders list
         children: [
           {
-            path: "/order-management",
+            path: "/order-list",
             name: "OrdersList",
             component: OrdersList,
             meta: { requiresAuth: true },
           },
           {
-            path: "/order-management/add",
+            path: "/order-list/add",
             name: "AddOrder",
             component: UpdateOrders, // Component for adding an order
             meta: { requiresAuth: true },
           },
           {
-            path: "/order-management/edit/:orderId",
+            path: "/order-list/edit/:orderId",
             name: "EditOrder",
             component: UpdateOrders, // Component for editing an order
             meta: { requiresAuth: true },
           },
         ],
       },
+      // Order Module
+
+      // Product Module
       {
-        path: "/productspage2",
-        name: "ProductsPage2",
+        path: "/products-page",
+        name: "ProductsPage",
         component: ProductsPage2,
         meta: { requiresAuth: true },
-        redirect: "/product-management", // Default to product list
+        redirect: "/product-list", // Default to product list
         children: [
           {
-            path: "/product-management",
+            path: "/product-list",
             name: "ProductsList",
             component: ProductsList,
             meta: { requiresAuth: true },
           },
           {
-            path: "/product-management/add",
+            path: "/product-list/add",
             name: "AddProduct",
             component: UpdateProducts,
             meta: { requiresAuth: true },
           },
           {
-            path: "/product-management/edit/:productId",
+            path: "/product-list/edit/:productId",
             name: "EditProduct",
             component: UpdateProducts,
             meta: { requiresAuth: true },
           },
         ],
       },
+      // Product Module
     ],
   },
 ];

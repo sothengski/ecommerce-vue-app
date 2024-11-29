@@ -31,13 +31,16 @@
 </template>
 
 <script>
-import { getUserData } from "@/utils/auth";
+// import { getUserData } from "@/utils/auth";
 import AuthService from "../../services/AuthService";
 
 export default {
   data() {
     return {
-      userId: getUserData().id,
+      // userId: getUserData().id,
+      // userId: null, // Store userId from route params
+      user: null, // Store the user details
+
       form: {
         // userName: "",
         firstName: "",
@@ -49,18 +52,21 @@ export default {
   },
 
   async created() {
-    // Load user details when the component is created
-    await this.loadUserInfo(this.userId);
-
-    // Check if editing an existing role
-    // const roleId = this.$route.params.id;
-    // if (roleId) {
-    //   this.isEdit = true;
-    //   this.loadRole(roleId);
-    // }
+    // Accessing route params directly when component is created
+    const userId = this.$route.params.userId;
+    if (userId) {
+      this.userId = userId; // Store userId in the component's data
+      console.log(`User ID at created: ${userId}`);
+      await this.loadUserInfo(userId); // Initial load when the component is first created
+    } else {
+      console.error("No userId found in route parameters");
+    }
   },
+
   methods: {
     async loadUserInfo(userId) {
+      console.log(`Loading user info for ID: ${userId}`);
+
       try {
         const response = await AuthService.getUserDetailbyId(userId);
         console.log("Server response:", response);
@@ -87,7 +93,7 @@ export default {
         // savedUserData(updatedUserInfo.data);
 
         alert("User information updated successfully!");
-        this.$router.push("/user-info"); // Navigate back to user info page
+        this.$router.push({ name: "ProfileInfo" }); // Navigate back to user info page
       } catch (error) {
         console.error("Error updating user information:", error);
         alert("Failed to update user information.");
@@ -98,7 +104,7 @@ export default {
     },
 
     cancelEdit() {
-      this.$router.push("/user-info");
+      this.$router.push({ name: "ProfileInfo" }); // Navigate back to user info page
     },
   },
 };

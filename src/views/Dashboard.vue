@@ -4,24 +4,22 @@
     <div class="sidebar">
       <ul>
         <li>
-          <router-link to="/user-info">User Information</router-link>
+          <router-link to="/profile-info">User Information</router-link>
         </li>
         <li>
-          <router-link to="/role-list">Role Management</router-link>
+          <router-link to="/roles-page">Role Management</router-link>
         </li>
         <li>
-          <router-link to="/user-list">User Management</router-link>
+          <router-link to="/users-page">User Management</router-link>
         </li>
         <li>
-          <router-link to="/category-management"
-            >Category Management</router-link
-          >
+          <router-link to="/categories-page">Category Management</router-link>
         </li>
         <li>
-          <router-link to="/product-management">Product Management</router-link>
+          <router-link to="/products-page">Product Management</router-link>
         </li>
         <li>
-          <router-link to="/order-management">Order Management</router-link>
+          <router-link to="/orders-page">Order Management</router-link>
         </li>
         <li class="logout">
           <button @click="logout">Logout</button>

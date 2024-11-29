@@ -39,19 +39,30 @@ export default {
       user: null,
     };
   },
+
   methods: {
+    // Navigate to the 'UpdateProfileInfo' page and pass the userId as a parameter
     goToEdit() {
-      this.$router.push("/user-info/edit");
+      if (this.user && this.user.id) {
+        // console.log(`${this.user.id}`);
+
+        this.$router.push({
+          name: "UpdateProfileInfo", // Assuming you have a route named "UpdateProfileInfo"
+          params: { userId: this.user.id },
+        });
+      } else {
+        console.error("User ID is missing");
+      }
     },
   },
 
   created() {
-    // Get user ID from localStorage and fetch user data
+    // Get user data from localStorage and assign to `user`
     const storedUser = getUserData();
     if (storedUser) {
       this.user = storedUser;
     } else {
-      console.error("No user ID found in localStorage");
+      console.error("No user data found in localStorage");
     }
   },
 };
