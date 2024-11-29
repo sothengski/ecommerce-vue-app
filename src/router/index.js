@@ -100,8 +100,8 @@ const routes = [
             meta: { requiresAuth: true },
           },
           {
-            path: "/user-list/edit/:id",
-            name: "UserList",
+            path: "/user-list/edit/:userId",
+            name: "UpdateUserInfo",
             component: UpdateUserInfo,
           },
         ],

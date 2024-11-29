@@ -93,7 +93,8 @@ export default {
         // savedUserData(updatedUserInfo.data);
 
         alert("User information updated successfully!");
-        this.$router.push({ name: "ProfileInfo" }); // Navigate back to user info page
+        this.$router.go(-1);
+        // this.$router.push({ name: "ProfileInfo" }); // Navigate back to user info page
       } catch (error) {
         console.error("Error updating user information:", error);
         alert("Failed to update user information.");
@@ -104,7 +105,8 @@ export default {
     },
 
     cancelEdit() {
-      this.$router.push({ name: "ProfileInfo" }); // Navigate back to user info page
+      this.$router.go(-1); // Go back to the previous page
+      // this.$router.push({ name: "ProfileInfo" }); // Navigate back to user info page
     },
   },
 };

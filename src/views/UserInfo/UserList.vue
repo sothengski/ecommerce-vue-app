@@ -72,10 +72,18 @@ export default {
       this.$router.push("/user-list/add");
       // alert("Navigate to Add New User form or open a modal.");
     },
-    editUser(user) {
-      this.$router.push(`/user-list/edit`);
-      console.log(user);
 
+    editUser(user) {
+      if (user && user.id) {
+        // console.log(`${this.user.id}`);
+
+        this.$router.push({
+          name: "UpdateProfileInfo", // Assuming you have a route named "UpdateProfileInfo"
+          params: { userId: user.id },
+        });
+      } else {
+        console.error("User ID is missing");
+      }
       // alert(`Editing user: ${user.name}`);
     },
     async deleteUser(userId) {
