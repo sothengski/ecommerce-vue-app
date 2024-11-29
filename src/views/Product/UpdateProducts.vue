@@ -46,8 +46,18 @@
         <label for="CategoryId">Category ID:</label>
         <input type="text" id="categoryId" v-model="form.categoryId" />
 
-        <label for="isActive">Active:</label>
-        <input type="checkbox" id="isActive" v-model="form.isActive" />
+        <!-- <label for="isActive">Active:</label>
+        <input type="checkbox" id="isActive" v-model="form.isActive" /> -->
+
+        <div class="form-group checkbox-group">
+          <label for="isActive">Active Status</label>
+          <div class="checkbox-container">
+            <input type="checkbox" id="isActive" v-model="form.isActive" />
+            <span class="checkbox-label">{{
+              form.isActive ? "Active" : "Inactive"
+            }}</span>
+          </div>
+        </div>
       </div>
 
       <div class="form-actions">
@@ -243,5 +253,31 @@ button[type="button"] {
 
 button[type="button"]:hover {
   background-color: #5a6268;
+}
+/* Custom styling for the checkbox */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.checkbox-label {
+  font-size: 18px;
+  color: #333;
+}
+
+/* Simplified checkbox styling */
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-left: 20px;
+  margin-right: 5px;
+  cursor: pointer;
 }
 </style>

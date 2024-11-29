@@ -9,9 +9,12 @@
         <tr>
           <th>Product ID</th>
           <th>Name</th>
+          <th>Category</th>
           <th>Brand</th>
           <th>Price</th>
           <th>Stock</th>
+          <th>Seller</th>
+          <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -23,9 +26,23 @@
         >
           <td>{{ product.productId }}</td>
           <td>{{ product.name }}</td>
+          <td>{{ product.category.name }}</td>
+
           <td>{{ product.brand }}</td>
           <td>{{ product.price }}</td>
           <td>{{ product.stock }}</td>
+          <td>{{ product.user.firstName }} {{ product.user.lastName }}</td>
+
+          <td>
+            <span
+              :class="{
+                'status-active': product.active,
+                'status-inactive': !product.active,
+              }"
+            >
+              {{ product.active ? "Active" : "Inactive" }}
+            </span>
+          </td>
           <td>
             <button class="edit-btn" @click="editProduct(product)">Edit</button>
             <button
@@ -153,6 +170,16 @@ p {
 
 .styled-table tbody tr:last-of-type {
   border-bottom: 2px solid #009879;
+}
+
+.status-active {
+  color: green;
+  font-weight: bold;
+}
+
+.status-inactive {
+  color: red;
+  font-weight: bold;
 }
 
 /* Buttons styling */
