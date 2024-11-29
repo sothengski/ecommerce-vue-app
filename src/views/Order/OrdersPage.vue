@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <router-view /> <!-- Dynamically loads the subcomponent -->
+    <router-view />
+    <!-- Dynamically loads the subcomponent -->
   </div>
 </template>
 

@@ -5,17 +5,16 @@ class OrderService {
   getAllOrders(data) {
     return http.get("/orders", data);
   }
-  
+
   // Get all orders by UserId
   getAllUserOrders(userId) {
     return http.get(`/orders/users/${userId}`);
   }
-  
+
   // Get an order by Id
   getOrder(orderId) {
     return http.get(`/orders/${orderId}`);
   }
-
 
   // Create a new order
   createOrder(inputData) {

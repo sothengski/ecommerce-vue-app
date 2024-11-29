@@ -4,7 +4,11 @@
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  name: "ProductsPage2",
+};
+</script>
 
 <style scoped>
 .page {

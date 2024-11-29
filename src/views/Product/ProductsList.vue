@@ -1,30 +1,37 @@
 <template>
   <div class="container">
     <div class="header">
-      <h2>Order List</h2>
-      <!-- <button class="add-btn" @click="addNewOrder">Add New Order</button> -->
+      <h2>Product List</h2>
+      <button class="add-btn" @click="addNewProduct">Add New Product</button>
     </div>
     <table class="styled-table">
       <thead>
         <tr>
-          <th>Order ID</th>
-          <th>Order Number</th>
-          <th>Total Items</th>
-          <th>Total Price</th>
-          <th>Status</th>
+          <th>Product ID</th>
+          <th>Name</th>
+          <th>Brand</th>
+          <th>Price</th>
+          <th>Stock</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="order in orders" :key="order.orderId">
-          <td>{{ order.orderId }}</td>
-          <td>{{ order.orderNumber }}</td>
-          <td>{{ order.items.length }}</td>
-          <td>{{ order.totalPrice }}</td>
-          <td>{{ order.orderStatus }}</td>
+        <tr
+          v-for="product in products"
+          :key="product.productId"
+          @click="console.log(product)"
+        >
+          <td>{{ product.productId }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.brand }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.stock }}</td>
           <td>
-            <button class="edit-btn" @click="editOrder(order)">Edit</button>
-            <button class="delete-btn" @click="deleteOrder(order.orderId)">
+            <button class="edit-btn" @click="editProduct(product)">Edit</button>
+            <button
+              class="delete-btn"
+              @click="deleteProduct(product.productId)"
+            >
               Delete
             </button>
           </td>
@@ -35,47 +42,49 @@
 </template>
 
 <script>
-import OrderService from "@/services/OrderService";
+import ProductService from "@/services/ProductService";
 
 export default {
-  name: "OrderList",
+  name: "ProductList",
   data() {
     return {
-      orders: [], // Store the list of orders
+      products: [], // Store the list of products
     };
   },
   methods: {
-    async fetchOrders() {
+    async fetchProducts() {
       try {
-        const response = await OrderService.getAllOrders();
-        this.orders = response.data.data; // Adjust based on API response structure
+        const response = await ProductService.getAllProducts();
+        this.products = response.data.data; // Adjust based on API response structure
       } catch (error) {
-        console.error("Error fetching orders:", error);
-        alert("Failed to fetch orders.");
+        console.error("Error fetching products:", error);
+        alert("Failed to fetch products.");
       }
     },
-    addNewOrder() {
-      this.$router.push("/order-management/add");
+    addNewProduct() {
+      this.$router.push("/product-management/add");
     },
-    editOrder(order) {
-      this.$router.push(`/order-management/edit/${order.orderId}`);
+    editProduct(product) {
+      this.$router.push(`/product-management/edit/${product.productId}`);
     },
-    async deleteOrder(orderId) {
-      const confirmed = confirm("Are you sure you want to delete this order?");
+    async deleteProduct(productId) {
+      const confirmed = confirm(
+        "Are you sure you want to delete this product?"
+      );
       if (confirmed) {
         try {
-          await OrderService.deleteOrder(orderId);
-          alert("Order deleted successfully.");
-          this.fetchOrders(); // Refresh the list after deletion
+          await ProductService.deleteProduct(productId);
+          alert("Product deleted successfully.");
+          this.fetchProducts(); // Refresh the list after deletion
         } catch (error) {
-          console.error("Error deleting order:", error);
-          alert("Failed to delete the order.");
+          console.error("Error deleting product:", error);
+          alert("Failed to delete the product.");
         }
       }
     },
   },
   created() {
-    this.fetchOrders(); // Fetch orders on component creation
+    this.fetchProducts(); // Fetch products on component creation
   },
 };
 </script>
