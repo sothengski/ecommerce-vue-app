@@ -4,7 +4,7 @@
       <form @submit.prevent="saveProduct">
         <div class="form-group">
           <label for="productName">Product Name:</label>
-          <input type="text" id="productName" v-model="form.productName" />
+          <input type="text" id="productName" v-model="form.productName"/>
           
           <label for="productDescription">Product Description:</label>
           <textarea id="productDescription" v-model="form.productDescription"></textarea>
@@ -28,10 +28,10 @@
           <input type="text" id="productImages" v-model="form.productImages" />
 
           <label for="userId">User ID:</label>
-          <input type="text" id="productImages" v-model="form.userId" />
+          <input type="text" id="userId" v-model="form.userId" />
 
           <label for="CategoryId">Category ID:</label>
-          <input type="text" id="productImages" v-model="form.categoryId" />
+          <input type="text" id="categoryId" v-model="form.categoryId" />
   
           <label for="isActive">Active:</label>
           <input type="checkbox" id="isActive" v-model="form.isActive" />
@@ -40,7 +40,7 @@
         <div class="form-actions">
           <button 
             type="submit" 
-            :disabled="!form.productName.trim() || !form.productBrand.trim() || !form.productPrice.trim() || !form.productStock.trim()">
+            :disabled="!String(form.productName).trim() || !String(form.productBrand).trim() || !String(form.productPrice).trim() || !String(form.productStock).trim()">
             {{ isEdit ? "Update" : "Save" }}
           </button>
   
@@ -57,24 +57,24 @@
     data() {
       return {
         form: {
-          id: null,  // Holds the ID for updates
+          productId: null,  // Holds the ID for updates
           productName: "",
           productDescription: "",
           productBrand: "",
           productPrice: "",
           productStock: "",
-          productSize: "",  // Size field (comma-separated values)
-          productColor: "",  // Color field (comma-separated values)
-          productImages: "",  // Image URLs as a comma-separated string
-          isActive: true,  // Boolean for active status
-          userId: null,  // User ID, if needed
-          categoryId: null,  // Category ID, if needed
+          productSize: "",  
+          productColor: "",  
+          productImages: "",  
+          isActive: true,  
+          userId: null,  
+          categoryId: null,  
         },
         isEdit: false,  // Flag to determine if it's an edit or add operation
       };
     },
     created() {
-      const productId = this.$route.params.id;
+      const productId = this.$route.params.productId;
       if (productId) {
         this.isEdit = true;
         this.loadProduct(productId);
@@ -84,20 +84,20 @@
       async loadProduct(productId) {
         try {
           const response = await ProductService.getProduct(productId);
-          this.form = {
-            id: response.data.id,
-            productName: response.data.name,
-            productDescription: response.data.description || "",
-            productBrand: response.data.brand,
-            productPrice: response.data.price,
-            productStock: response.data.stock,
-            productSize: response.data.size.join(","),  // Join array to CSV
-            productColor: response.data.color.join(","),  // Join array to CSV
-            productImages: response.data.images.join(","),  // Join array to CSV
-            userId: response.data.user.id,
-            categoryId: response.data.category.id,
-            isActive: response.data.active,
-          };
+            this.form = {
+            productId: response.data.data.productId,   // Ensure you access the correct nested data
+            productName: response.data.data.name || "",
+            productDescription: response.data.data.description || "",
+            productBrand: response.data.data.brand || "",
+            productPrice: response.data.data.price || "",
+            productStock: response.data.data.stock || "",
+            productSize: Array.isArray(response.data.data.size) ? response.data.data.size.join(",") : "",
+            productColor: Array.isArray(response.data.data.color) ? response.data.data.color.join(",") : "",
+            productImages: Array.isArray(response.data.data.images) ? response.data.data.images.join(",") : "",
+            userId: response.data.data.user ? response.data.data.user.id : null,
+            categoryId: response.data.data.category ? response.data.data.category.id : null,
+            isActive: response.data.data.active !== undefined ? response.data.data.active : true,
+            };
         } catch (error) {
           console.error("Error loading product:", error);
         }
@@ -116,11 +116,10 @@
           userId: this.form.userId,  
           categoryId: this.form.categoryId,  
         };
-        console.log("hihi: ", productData);
         if (this.isEdit) {
           // Update existing product
           try {
-            await ProductService.updateProduct(this.form.id, productData);
+            await ProductService.updateProduct(this.form.productId, productData);
             this.$router.push("/product-management");
           } catch (error) {
             console.error("Error updating product:", error);

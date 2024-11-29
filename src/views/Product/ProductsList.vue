@@ -16,7 +16,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="product in products" :key="product.productId">
+      <tr v-for="product in products" :key="product.productId" @click="console.log(product)">
         <td>{{ product.productId }}</td>
         <td>{{ product.name }}</td>
         <td>{{ product.brand }}</td>
@@ -60,7 +60,6 @@ methods: {
       this.$router.push(`/product-management/edit/${product.productId}`);
     },
     async deleteProduct(productId) {
-        console.log("Deleting product with ID:", productId);
       const confirmed = confirm("Are you sure you want to delete this product?");
       if (confirmed) {
         try {
