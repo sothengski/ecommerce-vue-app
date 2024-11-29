@@ -19,6 +19,7 @@ import UserList from "@/views/UserInfo/UserList.vue";
 import ProductsPage2 from "@/views/Product/ProductsPage2.vue";
 import ProductsList from "@/views/Product/ProductsList.vue";
 import UpdateProducts from "@/views/Product/UpdateProducts.vue";
+import AddUser from "@/views/UserInfo/AddUser.vue";
 
 // Simulating authentication state
 // const isAuthenticated = () => !!localStorage.getItem("user-token");
@@ -103,6 +104,13 @@ const routes = [
             path: "/user-list/edit/:userId",
             name: "UpdateUserInfo",
             component: UpdateUserInfo,
+            meta: { requiresAuth: true },
+          },
+          {
+            path: "/user-list/add",
+            name: "AddUser",
+            component: AddUser,
+            meta: { requiresAuth: true },
           },
         ],
       },

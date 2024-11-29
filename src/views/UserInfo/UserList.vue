@@ -69,7 +69,7 @@ export default {
     },
     addNewUser() {
       // Navigate to the add user route
-      this.$router.push("/user-list/add");
+      this.$router.push({ name: "AddUser" });
       // alert("Navigate to Add New User form or open a modal.");
     },
 

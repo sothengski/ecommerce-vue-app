@@ -195,14 +195,14 @@ export default {
 
         // Success message and redirect
         alert("Order updated successfully!");
-        this.$router.push("/order-management");
+        this.$router.go(-1);
       } catch (error) {
         console.error("Error updating order:", error);
         alert("Failed to update order.");
       }
     },
     cancelUpdate() {
-      this.$router.push("/order-management");
+      this.$router.go(-1);
     },
   },
   filters: {

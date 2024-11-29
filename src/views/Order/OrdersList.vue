@@ -55,10 +55,10 @@ export default {
       }
     },
     addNewOrder() {
-      this.$router.push("/order-management/add");
+      this.$router.push("/order-list/add");
     },
     editOrder(order) {
-      this.$router.push(`/order-management/edit/${order.orderId}`);
+      this.$router.push(`/order-list/edit/${order.orderId}`);
     },
     async deleteOrder(orderId) {
       const confirmed = confirm("Are you sure you want to delete this order?");

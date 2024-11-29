@@ -150,7 +150,7 @@ export default {
         // Update existing product
         try {
           await ProductService.updateProduct(this.form.productId, productData);
-          this.$router.push("/product-management");
+          this.$router.go(-1);
         } catch (error) {
           console.error("Error updating product:", error);
           alert("Failed to update product.");
@@ -159,7 +159,7 @@ export default {
         // Add new product
         try {
           await ProductService.createProduct(productData);
-          this.$router.push("/product-management");
+          this.$router.go(-1);
         } catch (error) {
           console.error("Error adding product:", error);
           alert("Failed to add product.");
@@ -167,7 +167,7 @@ export default {
       }
     },
     cancelBtn() {
-      this.$router.push("/product-management");
+      this.$router.go(-1);
     },
   },
 };

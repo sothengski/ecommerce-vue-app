@@ -62,10 +62,10 @@ export default {
       }
     },
     addNewProduct() {
-      this.$router.push("/product-management/add");
+      this.$router.push({ name: "AddProduct" });
     },
     editProduct(product) {
-      this.$router.push(`/product-management/edit/${product.productId}`);
+      this.$router.push(`/product-list/edit/${product.productId}`);
     },
     async deleteProduct(productId) {
       const confirmed = confirm(
