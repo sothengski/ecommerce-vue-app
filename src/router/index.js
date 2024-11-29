@@ -16,6 +16,9 @@ import { isAuthenticated } from "@/utils/auth";
 import AddOrUpdateRole from "@/views/Role/AddOrUpdateRole.vue";
 import RolePage from "@/views/Role/RolePage.vue";
 import UserList from "@/views/UserInfo/UserList.vue";
+import ProductsPage2 from "@/views/Product/ProductsPage2.vue";
+import ProductsList from "@/views/Product/ProductsList.vue";
+import UpdateProducts from "@/views/Product/UpdateProducts.vue";
 
 // Simulating authentication state
 // const isAuthenticated = () => !!localStorage.getItem("user-token");
@@ -112,6 +115,33 @@ const routes = [
             path: "/order-management/edit/:orderId",
             name: "EditOrder",
             component: UpdateOrders, // Component for editing an order
+            meta: { requiresAuth: true },
+          },
+        ],
+      },
+      {
+        path: "/productspage2",
+        name: "ProductsPage2",
+        component: ProductsPage2,
+        meta: { requiresAuth: true },
+        redirect: "/product-management", // Default to product list
+        children: [
+          {
+            path: "/product-management",
+            name: "ProductsList",
+            component: ProductsList,
+            meta: { requiresAuth: true },
+          },
+          {
+            path: "/product-management/add",
+            name: "AddProduct",
+            component: UpdateProducts,
+            meta: { requiresAuth: true },
+          },
+          {
+            path: "/product-management/edit/:productId",
+            name: "EditProduct",
+            component: UpdateProducts,
             meta: { requiresAuth: true },
           },
         ],
