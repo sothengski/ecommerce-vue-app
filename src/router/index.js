@@ -20,7 +20,7 @@ import UserPage from "@/views/UserInfo/UserPage.vue";
 import ProductsPage2 from "@/views/Product/ProductsPage2.vue";
 import ProductsList from "@/views/Product/ProductsList.vue";
 import UpdateProducts from "@/views/Product/UpdateProducts.vue";
-import AddUser from "@/views/UserInfo/AddUser.vue";
+import AddOrUpdateUser from "@/views/UserInfo/AddOrUpdateUser.vue";
 
 // Simulating authentication state
 // const isAuthenticated = () => !!localStorage.getItem("user-token");
@@ -91,7 +91,7 @@ const routes = [
       // User Module
       {
         path: "/users-page",
-        name: "UpdateUser",
+        name: "UserPage",
         component: UserPage,
         redirect: "/user-list", // Default to users list
         children: [
@@ -102,15 +102,15 @@ const routes = [
             meta: { requiresAuth: true },
           },
           {
-            path: "/user-list/edit/:userId",
-            name: "UpdateUserInfo",
-            component: UpdateUserInfo,
+            path: "/user-list/add",
+            name: "AddUser",
+            component: AddOrUpdateUser,
             meta: { requiresAuth: true },
           },
           {
-            path: "/user-list/add",
-            name: "AddUser",
-            component: AddUser,
+            path: "/user-list/edit/:userId",
+            name: "UpdateUser",
+            component: AddOrUpdateUser,
             meta: { requiresAuth: true },
           },
         ],

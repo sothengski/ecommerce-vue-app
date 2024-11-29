@@ -79,7 +79,7 @@ export default {
         // console.log(`${this.user.id}`);
 
         this.$router.push({
-          name: "UpdateProfileInfo", // Assuming you have a route named "UpdateProfileInfo"
+          name: "UpdateUser", // Assuming you have a route named "UpdateProfileInfo"
           params: { userId: user.id },
         });
       } else {

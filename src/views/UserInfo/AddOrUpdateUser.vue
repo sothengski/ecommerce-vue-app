@@ -1,10 +1,16 @@
 <template>
   <div class="container">
-    <h2>Add New User</h2>
-    <form @submit.prevent="addUser">
+    <h2>{{ isUpdate ? "Update User Information" : "Add New User" }}</h2>
+    <form @submit.prevent="submitUser">
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" id="email" v-model="form.email" required />
+        <input
+          type="email"
+          id="email"
+          v-model="form.email"
+          :disabled="isUpdate"
+          required
+        />
       </div>
       <div class="form-group">
         <label for="firstName">First Name</label>
@@ -24,12 +30,18 @@
       </div>
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="text" id="password" v-model="form.password" required />
+        <input
+          type="text"
+          id="password"
+          v-model="form.password"
+          required
+          v-if="!isUpdate"
+        />
       </div>
       <div class="form-group">
         <label for="role">Role</label>
         <select id="role" v-model="form.role" required>
-          <option v-for="role in roles" :key="role" :value="role">
+          <option v-for="role in roles" :key="role.id" :value="role.id">
             {{ role.name }}
           </option>
         </select>
@@ -45,8 +57,10 @@
       </div>
 
       <div class="form-actions">
-        <button type="submit">Create User</button>
-        <button type="button" @click="cancelAdd">Cancel</button>
+        <button type="submit">
+          {{ isUpdate ? "Update User" : "Create User" }}
+        </button>
+        <button type="button" @click="cancelBtn">Cancel</button>
       </div>
     </form>
   </div>
@@ -70,33 +84,65 @@ export default {
         role: 3,
         active: true, // Default to active
       },
+      isUpdate: false, // To determine if we're updating an existing user
+      userId: null, // Store the user ID for updating
     };
   },
   methods: {
-    async addUser() {
-      // Create a new user by sending a POST request to the server
+    async submitUser() {
       try {
-        // console.log("Form Data: ", this.form);
-
-        const response = await AuthService.addNewUser({
+        const userData = {
           email: this.form.email,
           firstName: this.form.firstName,
           lastName: this.form.lastName,
           phone: this.form.phone,
           address: this.form.address,
           password: this.form.password,
-          roleId: this.form.role.id,
+          roleId: this.form.role,
           active: this.form.active,
-        });
-        if (response.status === 201) {
-          this.$router.go(-1); // Redirect to the user list after successful user creation
+        };
+
+        let response;
+        if (this.isUpdate) {
+          // Update user
+          response = await AuthService.updateUserById(this.userId, userData);
+        } else {
+          // Add new user
+          response = await AuthService.addNewUser(userData);
+        }
+
+        if (response.status === 200 || response.status === 201) {
+          this.$router.go(-1); // Redirect to the user list
         }
       } catch (error) {
-        console.error("Error creating user:", error);
-        alert("There was an error creating the user.");
+        console.error("Error submitting user:", error);
+        alert("There was an error processing the user data.");
       }
     },
-    cancelAdd() {
+    // async addUser() {
+    //   // Create a new user by sending a POST request to the server
+    //   try {
+    //     // console.log("Form Data: ", this.form);
+
+    //     const response = await AuthService.addNewUser({
+    //       email: this.form.email,
+    //       firstName: this.form.firstName,
+    //       lastName: this.form.lastName,
+    //       phone: this.form.phone,
+    //       address: this.form.address,
+    //       password: this.form.password,
+    //       roleId: this.form.role.id,
+    //       active: this.form.active,
+    //     });
+    //     if (response.status === 201) {
+    //       this.$router.go(-1); // Redirect to the user list after successful user creation
+    //     }
+    //   } catch (error) {
+    //     console.error("Error creating user:", error);
+    //     alert("There was an error creating the user.");
+    //   }
+    // },
+    cancelBtn() {
       // Redirect to the user list page without adding a user
       this.$router.go(-1);
     },
@@ -108,9 +154,37 @@ export default {
         console.error("Error fetching roles:", error);
       }
     },
+    async fetchUser() {
+      try {
+        const response = await AuthService.getUserDetailbyId(this.userId);
+
+        console.log(`response:`, response);
+
+        this.form = {
+          ...this.form,
+          email: response.data.data.email,
+          firstName: response.data.data.firstName,
+          lastName: response.data.data.lastName,
+          phone: response.data.data.phone,
+          address: response.data.data.address,
+          password: "", // Don't expose password
+          role: response.data.data.role.id, // Set role ID
+          active: response.data.data.active,
+        };
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    },
   },
   created() {
     this.fetchRoles(); // Fetch roles when the component is created
+
+    const userId = this.$route.params.userId;
+    if (userId) {
+      this.isUpdate = true;
+      this.userId = userId; // Get the user ID from route params
+      this.fetchUser(); // Fetch the existing user's data
+    }
   },
 };
 </script>
