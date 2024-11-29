@@ -25,6 +25,11 @@ class AuthService {
     return http.get(`/users/${userId}`);
   }
 
+  // Add a new user
+  addNewUser(data) {
+    return http.post(`/users`, data);
+  }
+
   // Update an user data by Id
   updateUserById(userId, data) {
     return http.put(`/users/${userId}`, data);

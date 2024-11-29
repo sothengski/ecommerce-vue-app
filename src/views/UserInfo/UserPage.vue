@@ -1,34 +1,13 @@
 <template>
   <div class="container">
-    <div class="layout">
-      <!-- Left Tab Bar -->
-      <div class="tab-bar">
-        <ul>
-          <li>
-            <router-link to="/user-info" exact>User Information</router-link>
-          </li>
-          <li>
-            <router-link to="/user-info/edit">Update Information</router-link>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Right Content Area -->
-      <div class="content">
-        <router-view />
-      </div>
-    </div>
+    <router-view />
   </div>
 </template>
 
-<script>
-export default {
-  name: "UserInfoPage",
-};
-</script>
+<script></script>
 
 <style scoped>
-.container {
+.page {
   display: flex;
   flex-direction: column;
   padding: 20px;

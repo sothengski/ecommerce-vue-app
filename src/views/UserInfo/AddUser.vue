@@ -1,167 +1,210 @@
 <template>
-  <div class="new-user-form">
-    <h1>Create New User</h1>
-    <form @submit.prevent="createUser">
+  <div class="container">
+    <h2>Add New User</h2>
+    <form @submit.prevent="addUser">
       <div class="form-group">
         <label for="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          v-model="user.email"
-          placeholder="Enter user email"
-          required
-        />
+        <input type="email" id="email" v-model="form.email" required />
       </div>
-
       <div class="form-group">
         <label for="firstName">First Name</label>
-        <input
-          type="text"
-          id="firstName"
-          v-model="user.firstName"
-          placeholder="Enter first name"
-          required
-        />
+        <input type="text" id="firstName" v-model="form.firstName" required />
       </div>
-
       <div class="form-group">
         <label for="lastName">Last Name</label>
-        <input
-          type="text"
-          id="lastName"
-          v-model="user.lastName"
-          placeholder="Enter last name"
-          required
-        />
+        <input type="text" id="lastName" v-model="form.lastName" required />
       </div>
-
       <div class="form-group">
         <label for="phone">Phone</label>
-        <input
-          type="text"
-          id="phone"
-          v-model="user.phone"
-          placeholder="Enter phone number"
-          required
-        />
+        <input type="tel" id="phone" v-model="form.phone" />
       </div>
-
       <div class="form-group">
-        <label for="address">Address</label>
-        <input
-          type="text"
-          id="address"
-          v-model="user.address"
-          placeholder="Enter address"
-          required
-        />
+        <label for="address">Shipping Address</label>
+        <textarea id="address" v-model="form.address"></textarea>
       </div>
-
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="text" id="password" v-model="form.password" required />
+      </div>
       <div class="form-group">
         <label for="role">Role</label>
-        <select id="role" v-model="user.role" required>
-          <option value="admin">Admin</option>
-          <option value="user">User</option>
-          <option value="moderator">Moderator</option>
+        <select id="role" v-model="form.role" required>
+          <option v-for="role in roles" :key="role" :value="role">
+            {{ role.name }}
+          </option>
         </select>
       </div>
-
-      <div class="form-group">
+      <div class="form-group checkbox-group">
         <label for="active">Active Status</label>
-        <input type="checkbox" id="active" v-model="user.active" />
-        <span>{{ user.active ? "Active" : "Inactive" }}</span>
+        <div class="checkbox-container">
+          <input type="checkbox" id="active" v-model="form.active" />
+          <span class="checkbox-label">{{
+            form.active ? "Active" : "Inactive"
+          }}</span>
+        </div>
       </div>
 
-      <div class="form-group">
-        <button type="submit" :disabled="isSubmitting">Create User</button>
+      <div class="form-actions">
+        <button type="submit">Create User</button>
+        <button type="button" @click="cancelAdd">Cancel</button>
       </div>
     </form>
   </div>
 </template>
 
 <script>
+import AuthService from "../../services/AuthService";
+import RoleService from "../../services/RoleService";
+
 export default {
   data() {
     return {
-      // Define the initial structure of the new user
-      user: {
+      roles: [], // To store the roles fetched from the API
+      form: {
         email: "",
         firstName: "",
         lastName: "",
         phone: "",
         address: "",
-        role: "user", // default role
-        active: true, // default status is active
+        password: "12345678",
+        role: 3,
+        active: true, // Default to active
       },
-      isSubmitting: false, // To disable the submit button during form submission
     };
   },
   methods: {
-    async createUser() {
-      this.isSubmitting = true;
-
+    async addUser() {
+      // Create a new user by sending a POST request to the server
       try {
-        // Simulate API call to create the user
-        const response = await this.$axios.post("/api/users", this.user);
+        // console.log("Form Data: ", this.form);
 
+        const response = await AuthService.addNewUser({
+          email: this.form.email,
+          firstName: this.form.firstName,
+          lastName: this.form.lastName,
+          phone: this.form.phone,
+          address: this.form.address,
+          password: this.form.password,
+          roleId: this.form.role.id,
+          active: this.form.active,
+        });
         if (response.status === 201) {
-          this.$router.push("/users"); // Redirect to the user list page after successful creation
+          this.$router.go(-1); // Redirect to the user list after successful user creation
         }
       } catch (error) {
         console.error("Error creating user:", error);
         alert("There was an error creating the user.");
-      } finally {
-        this.isSubmitting = false;
       }
     },
+    cancelAdd() {
+      // Redirect to the user list page without adding a user
+      this.$router.go(-1);
+    },
+    async fetchRoles() {
+      try {
+        const response = await RoleService.getAllRoles();
+        this.roles = response.data;
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+      }
+    },
+  },
+  created() {
+    this.fetchRoles(); // Fetch roles when the component is created
   },
 };
 </script>
 
 <style scoped>
-.new-user-form {
-  width: 500px;
-  margin: 0 auto;
+.container {
   padding: 20px;
   background-color: #f9f9f9;
-  border-radius: 8px;
+  margin: auto;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.new-user-form h1 {
-  text-align: center;
-  margin-bottom: 20px;
+.container form {
+  display: flex;
+  flex-direction: column;
 }
 
-.new-user-form .form-group {
+.form-group {
   margin-bottom: 15px;
 }
 
-.new-user-form label {
-  display: block;
-  font-weight: bold;
+.container label {
   margin-bottom: 5px;
 }
 
-.new-user-form input,
-.new-user-form select {
-  width: 100%;
+.container input,
+textarea,
+select,
+button {
   padding: 8px;
-  margin: 5px 0;
+  margin-bottom: 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
+  width: 100%;
+  margin: 5px 0 10px;
+  box-sizing: border-box;
 }
 
-.new-user-form button {
-  padding: 10px 20px;
-  background-color: #4caf50;
+.container form .form-actions {
+  display: flex;
+  gap: 10px;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
   color: white;
+  padding: 10px;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
-  border-radius: 4px;
 }
 
-.new-user-form button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+button[type="button"] {
+  background-color: #6c757d;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button[type="button"]:hover {
+  background-color: #5a6268;
+}
+/* Custom styling for the checkbox */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.checkbox-label {
+  font-size: 18px;
+  color: #333;
+}
+
+/* Simplified checkbox styling */
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-left: 20px;
+  margin-right: 5px;
+  cursor: pointer;
 }
 </style>

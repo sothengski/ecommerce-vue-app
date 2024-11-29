@@ -71,6 +71,7 @@ export default {
       // Navigate to the add user route
       this.$router.push({ name: "AddUser" });
       // alert("Navigate to Add New User form or open a modal.");
+      // this.$router.push("/users-page/user-list/add");
     },
 
     editUser(user) {
@@ -91,7 +92,7 @@ export default {
       if (confirmed) {
         try {
           await AuthService.deleteUser(userId); // API call to delete the user
-          alert("Role deleted successfully.");
+          alert("User deleted successfully.");
           this.fetchUsers(); // Refresh the list after deletion
         } catch (error) {
           console.error("Error deleting user:", error);

@@ -16,6 +16,7 @@ import { isAuthenticated } from "@/utils/auth";
 import AddOrUpdateRole from "@/views/Role/AddOrUpdateRole.vue";
 import RolePage from "@/views/Role/RolePage.vue";
 import UserList from "@/views/UserInfo/UserList.vue";
+import UserPage from "@/views/UserInfo/UserPage.vue";
 import ProductsPage2 from "@/views/Product/ProductsPage2.vue";
 import ProductsList from "@/views/Product/ProductsList.vue";
 import UpdateProducts from "@/views/Product/UpdateProducts.vue";
@@ -91,7 +92,7 @@ const routes = [
       {
         path: "/users-page",
         name: "UpdateUser",
-        component: UserList,
+        component: UserPage,
         redirect: "/user-list", // Default to users list
         children: [
           {
