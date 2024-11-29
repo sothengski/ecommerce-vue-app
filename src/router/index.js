@@ -2,10 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "@/views/HomePage.vue";
 import LoginPage from "@/views/Auth/LoginPage.vue";
 import RegisterPage from "@/views/Auth/RegisterPage.vue";
+import CartPage from "@/views/Cart/CartPage.vue";
 import CategoriesPage from "@/views/Category/CategoriesPage.vue";
 import ProductsPage from "@/views/Product/ProductsPage.vue";
-import CartPage from "@/views/Cart/CartPage.vue";
 import OrdersPage from "@/views/Order/OrdersPage.vue";
+import OrdersList from "@/views/Order/OrdersList.vue";
+import UpdateOrders from "@/views/Order/UpdateOrders.vue";
 import Dashboard from "@/views/Dashboard.vue";
 import RoleList from "@/views/Role/RoleList.vue";
 import UserInfo from "@/views/UserInfo/UserInfo.vue";
@@ -31,13 +33,6 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: "/orders",
-    name: "Orders",
-    component: OrdersPage,
-    meta: { requiresAuth: true },
-  },
-
-  {
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
@@ -60,8 +55,7 @@ const routes = [
         name: "RolePage",
         component: RolePage,
         meta: { requiresAuth: true },
-        redirect: "/role-list", // Redirect to User Information by default
-
+        redirect: "/role-list", // Default to role list
         children: [
           {
             path: "/role-list",
@@ -87,30 +81,41 @@ const routes = [
         path: "/user-list",
         name: "UpdateUser",
         component: UserList,
-        meta: { requiresAuth: true },
+        children: [
+          {
+            path: "/user-list/edit/:id",
+            name: "UserList",
+            component: UpdateUserInfo,
+          },
+        ],
       },
       {
-        path: "/user-list/edit/:id",
-        name: "UserList",
-        component: UpdateUserInfo,
+        path: "/orderspage",
+        name: "OrdersPage",
+        component: OrdersPage,
         meta: { requiresAuth: true },
+        redirect: "/order-management", // Default to orders list
+        children: [
+          {
+            path: "/order-management",
+            name: "OrdersList",
+            component: OrdersList,
+            meta: { requiresAuth: true },
+          },
+          {
+            path: "/order-management/add",
+            name: "AddOrder",
+            component: UpdateOrders, // Component for adding an order
+            meta: { requiresAuth: true },
+          },
+          {
+            path: "/order-management/edit/:orderId",
+            name: "EditOrder",
+            component: UpdateOrders, // Component for editing an order
+            meta: { requiresAuth: true },
+          },
+        ],
       },
-
-      // {
-      //   path: "product-management",
-      //   name: "ProductManagement",
-      //   component: ProductManagement,
-      // },
-      // {
-      //   path: "category-management",
-      //   name: "CategoryManagement",
-      //   component: CategoryManagement,
-      // },
-      // {
-      //   path: "order-management",
-      //   name: "OrderManagement",
-      //   component: OrderManagement,
-      // },
     ],
   },
 ];
