@@ -49,20 +49,34 @@
 </template>
 
 <script>
-import { logout, getUserData } from "@/utils/auth";
+import { logout } from "@/utils/auth";
 import { authState } from "@/utils/authState";
+// import CartService from "./services/CartService";
+// import { loadCartItemCount, updateCartItemCount } from "./utils/cartState";
 
 export default {
   name: "App",
-  // data() {
-  //   return {
-  //     authState: isAuthenticated(), // Initialize with current authentication state
-  //   };
-  // },
+  data() {
+    return {
+      user: null,
+      // cartItems: [],
+      // countItems: 0,
+    };
+  },
+  created() {
+    // this.fetchCart();
+    // console.log(loadCartItemCount());
+    // this.countItems = loadCartItemCount(); // Load cart item count from localStorage when component is created
+  },
   computed: {
     isAuthenticated() {
       return authState.isAuthenticated; // Access the reactive auth state
     },
+
+    // Computed property to calculate the total number of items in the cart
+    // cartItemCount() {
+    //   return this.cartItems.reduce((total, item) => total + item.quantity, 0);
+    // },
   },
   methods: {
     logout() {
@@ -71,13 +85,32 @@ export default {
       alert("You have logged out.");
       this.$router.push("/login");
     },
+    // async fetchCart() {
+    //   this.user = getUserData();
+
+    //   try {
+    //     const response = await CartService.getCartByUserId(this.user.id);
+
+    //     if (response.data.success) {
+    //       // console.log("cart request", response.data.data.items);
+
+    //       this.cartId = response.data.data.id;
+    //       updateCartItemCount(response.data.data.items.size);
+    //       this.cartItems = response.data.data.items; // Set cart items
+    //     } else {
+    //       console.error("Failed to fetch cart:", response.data.message);
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching cart:", error);
+    //   }
+    // },
   },
   mounted() {
     // Optional: Log user data on mount
     if (this.isAuthenticated) {
       // this.fullname = getUserData().firstName + " " + getUserData().lastName;
       // console.log("User is authenticated.");
-      console.log("User data:", getUserData());
+      // this.user = getUserData();
     } else {
       // console.log("User is not authenticated.");
     }

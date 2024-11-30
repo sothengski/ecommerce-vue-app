@@ -104,6 +104,7 @@
 </template>
 
 <script>
+import { updateCartItemCount } from "@/utils/cartState";
 import axios from "axios";
 
 export default {
@@ -207,6 +208,7 @@ export default {
         if (response.data.success) {
           console.log("Item added to cart:", response.data);
           // You can also show a notification or update UI here
+          updateCartItemCount(response.data.data.items.size);
         } else {
           console.error("Failed to add item to cart:", response.data.message);
         }

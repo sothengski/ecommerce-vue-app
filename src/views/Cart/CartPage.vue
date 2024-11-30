@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import CartService from "@/services/CartService";
 import axios from "axios";
 
 export default {
@@ -83,9 +84,8 @@ export default {
       }
 
       try {
-        const response = await axios.get(
-          `http://localhost:8080/api/carts/users/${userData.id}`
-        );
+        const response = await CartService.getCartByUserId(userData.id);
+
         if (response.data.success) {
           this.cartId = response.data.data.id;
           this.cartItems = response.data.data.items; // Set cart items
