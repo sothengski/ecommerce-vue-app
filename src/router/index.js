@@ -28,7 +28,12 @@ import CategoryList from "@/views/Category/CategoryList.vue";
 // const isAuthenticated = () => !!localStorage.getItem("user-token");
 
 const routes = [
-  { path: "/", name: "Home", component: HomePage },
+  {
+    path: "/",
+    name: "Home",
+    component: HomePage,
+    meta: { title: "Home - FasionAura" },
+  },
   { path: "/login", name: "Login", component: LoginPage },
   { path: "/register", name: "Register", component: RegisterPage },
   { path: "/products", name: "Products", component: ProductsPage },

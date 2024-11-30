@@ -7,6 +7,8 @@
     <table class="styled-table">
       <thead>
         <tr>
+          <th>Image</th>
+
           <th>Product ID</th>
           <th>Name</th>
           <th>Category</th>
@@ -24,6 +26,13 @@
           :key="product.productId"
           @click="console.log(product)"
         >
+          <td>
+            <img
+              :src="product.images[0]"
+              alt="Product Image"
+              class="product-image"
+            />
+          </td>
           <td>{{ product.productId }}</td>
           <td>{{ product.name }}</td>
           <td>{{ product.category.name }}</td>
@@ -126,5 +135,11 @@ export default {
   border: 1px solid #ddd;
   border-radius: 10px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.product-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
 }
 </style>
