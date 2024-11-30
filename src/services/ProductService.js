@@ -13,7 +13,7 @@ class ProductService {
 
   // Get all products by UserId
   getAllUserProducts(userId) {
-    return http.get(`/products/users/${userId}`);
+    return http.get(`/users/${userId}/products`);
   }
 
   // Create a new product

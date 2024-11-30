@@ -60,9 +60,11 @@
 
 <script>
 import ProductService from "@/services/ProductService";
+import { getUserData } from "@/utils/auth";
 
 export default {
   name: "ProductList",
+  user: null,
   data() {
     return {
       products: [], // Store the list of products
@@ -71,7 +73,10 @@ export default {
   methods: {
     async fetchProducts() {
       try {
-        const response = await ProductService.getAllProducts();
+        const response =
+          this.user.role.name == "admin"
+            ? await ProductService.getAllProducts()
+            : await ProductService.getAllUserProducts(this.user.id);
         this.products = response.data.data; // Adjust based on API response structure
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -101,6 +106,14 @@ export default {
     },
   },
   created() {
+    // Get user data from localStorage and assign to `user`
+    const storedUser = getUserData();
+
+    if (storedUser) {
+      this.user = storedUser;
+    } else {
+      console.error("No user data found in localStorage");
+    }
     this.fetchProducts(); // Fetch products on component creation
   },
 };
