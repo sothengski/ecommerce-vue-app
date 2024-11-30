@@ -43,8 +43,21 @@
         <label for="userId">User ID:</label>
         <input type="text" id="userId" v-model="form.userId" />
 
-        <label for="CategoryId">Category ID:</label>
-        <input type="text" id="categoryId" v-model="form.categoryId" />
+        <!-- <label for="CategoryId">Category ID:</label>
+        <input type="text" id="categoryId" v-model="form.categoryId" /> -->
+
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" v-model="form.categoryId" required>
+            <option
+              v-for="category in categories"
+              :key="category.id"
+              :value="category.id"
+            >
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
 
         <!-- <label for="isActive">Active:</label>
         <input type="checkbox" id="isActive" v-model="form.isActive" /> -->
@@ -80,11 +93,13 @@
 </template>
 
 <script>
+import CategoryService from "@/services/CategoryService";
 import ProductService from "../../services/ProductService";
 
 export default {
   data() {
     return {
+      categories: [], // To store the categories fetched from the API
       form: {
         productId: null, // Holds the ID for updates
         productName: "",
@@ -103,12 +118,15 @@ export default {
     };
   },
   created() {
+    this.fetchCategories(); // Fetch categories when the component is created
+
     const productId = this.$route.params.productId;
     if (productId) {
       this.isEdit = true;
       this.loadProduct(productId);
     }
   },
+
   methods: {
     async loadProduct(productId) {
       try {
@@ -130,9 +148,7 @@ export default {
             ? response.data.data.images.join(",")
             : "",
           userId: response.data.data.user ? response.data.data.user.id : null,
-          categoryId: response.data.data.category
-            ? response.data.data.category.id
-            : null,
+          categoryId: response.data.data.category.id,
           isActive:
             response.data.data.active !== undefined
               ? response.data.data.active
@@ -179,6 +195,14 @@ export default {
     cancelBtn() {
       this.$router.go(-1);
     },
+    async fetchCategories() {
+      try {
+        const response = await CategoryService.getAllCategories();
+        this.categories = response.data.data;
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    },
   },
 };
 </script>
@@ -207,6 +231,7 @@ export default {
 
 .container input,
 textarea,
+select,
 button {
   padding: 8px;
   margin-bottom: 10px;

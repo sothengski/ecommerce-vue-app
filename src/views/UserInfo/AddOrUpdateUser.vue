@@ -119,29 +119,6 @@ export default {
         alert("There was an error processing the user data.");
       }
     },
-    // async addUser() {
-    //   // Create a new user by sending a POST request to the server
-    //   try {
-    //     // console.log("Form Data: ", this.form);
-
-    //     const response = await AuthService.addNewUser({
-    //       email: this.form.email,
-    //       firstName: this.form.firstName,
-    //       lastName: this.form.lastName,
-    //       phone: this.form.phone,
-    //       address: this.form.address,
-    //       password: this.form.password,
-    //       roleId: this.form.role.id,
-    //       active: this.form.active,
-    //     });
-    //     if (response.status === 201) {
-    //       this.$router.go(-1); // Redirect to the user list after successful user creation
-    //     }
-    //   } catch (error) {
-    //     console.error("Error creating user:", error);
-    //     alert("There was an error creating the user.");
-    //   }
-    // },
     cancelBtn() {
       // Redirect to the user list page without adding a user
       this.$router.go(-1);

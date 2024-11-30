@@ -19,7 +19,7 @@ import UserList from "@/views/UserInfo/UserList.vue";
 import UserPage from "@/views/UserInfo/UserPage.vue";
 import ProductsPage2 from "@/views/Product/ProductsPage2.vue";
 import ProductsList from "@/views/Product/ProductsList.vue";
-import UpdateProducts from "@/views/Product/UpdateProducts.vue";
+import UpdateProducts from "@/views/Product/AddOrUpdateProduct.vue";
 import AddOrUpdateUser from "@/views/UserInfo/AddOrUpdateUser.vue";
 import AddOrUpdateCategory from "@/views/Category/AddOrUpdateCategory.vue";
 import CategoryList from "@/views/Category/CategoryList.vue";

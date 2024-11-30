@@ -86,10 +86,11 @@ export default {
 
 <style>
 /* Global styles */
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #f6f4f3;
+  /* background-color: #f6f4f3; */
 }
 
 /* AppBar styles */
@@ -111,8 +112,9 @@ body {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
+  border: none;
 }
 
 /* Logo styles */

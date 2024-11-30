@@ -54,8 +54,9 @@ export default {
 <style scoped>
 .dashboard {
   display: flex;
-  height: 75vh; /* Full-height layout */
+  height: 100vh; /* Full-height layout */
   margin: auto;
+  overflow: hidden; /* Prevent scrolling on the main container */
 }
 
 .sidebar {
@@ -64,6 +65,9 @@ export default {
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
+  top: 0; /* Keep the sidebar fixed at the top when scrolling */
+  height: 75vh; /* Full height */
+  overflow-y: auto; /* Allows scrolling within the sidebar if the content exceeds height */
 }
 
 .sidebar ul {
@@ -93,6 +97,7 @@ export default {
   width: 80%;
   padding: 20px;
   background-color: #fff;
+  overflow-y: auto; /* Allows content to scroll while the sidebar stays fixed */
 }
 
 /* Styling for the logout button */
