@@ -36,9 +36,11 @@
 
 <script>
 import OrderService from "@/services/OrderService";
+import { getUserData } from "@/utils/auth";
 
 export default {
   name: "OrderList",
+  user: null,
   data() {
     return {
       orders: [], // Store the list of orders
@@ -47,7 +49,12 @@ export default {
   methods: {
     async fetchOrders() {
       try {
-        const response = await OrderService.getAllOrders();
+        console.log(this.user.role.name);
+
+        const response =
+          this.user.role.name == "admin"
+            ? await OrderService.getAllOrders()
+            : await OrderService.getAllUserOrders(this.user.id);
         this.orders = response.data.data; // Adjust based on API response structure
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -75,6 +82,14 @@ export default {
     },
   },
   created() {
+    // Get user data from localStorage and assign to `user`
+    const storedUser = getUserData();
+
+    if (storedUser) {
+      this.user = storedUser;
+    } else {
+      console.error("No user data found in localStorage");
+    }
     this.fetchOrders(); // Fetch orders on component creation
   },
 };
