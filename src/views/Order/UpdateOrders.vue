@@ -39,7 +39,7 @@
               <td>
                 <input
                   type="number"
-                  min="1"
+                  min="0"
                   v-model.number="item.quantity"
                   @input="updateItemTotal(index)"
                 />
@@ -161,18 +161,20 @@ export default {
     async updateOrder() {
       try {
         // Log the order ID and form data being sent
-        console.log("Order ID:", this.form.orderId);
-        console.log("Total Price:", this.form.totalPrice);
-        console.log("Order Status:", this.form.orderStatus);
+        // console.log("Order ID:", this.form.orderId);
+        // console.log("Total Price:", this.form.totalPrice);
+        // console.log("Order Status:", this.form.orderStatus);
 
         // Prepare updated items data (only sending the changed ones)
         const updatedItems = this.items.map((item) => ({
-          id: item.id, // Item ID to match existing record
+          productId: item.product.id, // Item ID to match existing record
           quantity: item.quantity, // Updated quantity
         }));
 
         // Log the updated items array
-        console.log("Updated Items:", updatedItems);
+
+        // console.log("Count Items:", updatedItems.size);
+        // console.log("Updated Items:", updatedItems);
 
         // Send the complete order object, including updated items, to the backend
         const orderPayload = {
@@ -189,9 +191,14 @@ export default {
         };
 
         // Log the full order data being sent
-        console.log("Updated Order Data:", orderPayload);
+        // console.log("Updated Order Data:", orderPayload);
 
-        await OrderService.updateOrder(this.form.orderId, orderPayload);
+        const reponse = await OrderService.updateOrder(
+          this.form.orderId,
+          orderPayload
+        );
+
+        console.log("Updated Order Data from server:", reponse);
 
         // Success message and redirect
         alert("Order updated successfully!");
