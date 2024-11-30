@@ -13,6 +13,7 @@ export const savedUserId = (userId) => {
 // Remove user data from localStorage
 export const logout = () => {
   localStorage.removeItem("user");
+  localStorage.removeItem("userId");
 };
 
 // Retrieve user data from localStorage

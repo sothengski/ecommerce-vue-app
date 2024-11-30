@@ -75,10 +75,11 @@ export default {
   mounted() {
     // Optional: Log user data on mount
     if (this.isAuthenticated) {
-      console.log("User is authenticated.");
+      // this.fullname = getUserData().firstName + " " + getUserData().lastName;
+      // console.log("User is authenticated.");
       console.log("User data:", getUserData());
     } else {
-      console.log("User is not authenticated.");
+      // console.log("User is not authenticated.");
     }
   },
 };

@@ -6,13 +6,14 @@
         <li>
           <router-link to="/profile-info">User Information</router-link>
         </li>
-        <li>
+        <li v-if="userRole === 'admin'">
           <router-link to="/roles-page">Role Management</router-link>
         </li>
-        <li>
+
+        <li v-if="userRole === 'admin'">
           <router-link to="/users-page">User Management</router-link>
         </li>
-        <li>
+        <li v-if="userRole === 'admin' || userRole === 'seller'">
           <router-link to="/categories-page">Category Management</router-link>
         </li>
         <li>
@@ -35,11 +36,12 @@
 </template>
 
 <script>
-import { logout } from "@/utils/auth";
+import { getUserData, logout } from "@/utils/auth";
 import { authState } from "@/utils/authState";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Dashboard",
+  userRole: "",
   methods: {
     logout() {
       logout();
@@ -47,6 +49,13 @@ export default {
       alert("You have logged out.");
       this.$router.push("/login");
     },
+  },
+  async created() {
+    const storedUser = getUserData();
+    this.userRole = storedUser.role.name;
+    // ...getUserData({
+    //   userRole: "getUserRole", // Get user role from Vuex store
+    // }),
   },
 };
 </script>

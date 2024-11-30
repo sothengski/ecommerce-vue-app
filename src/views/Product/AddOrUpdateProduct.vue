@@ -40,8 +40,8 @@
         <label for="productImages">Product Images (URL):</label>
         <input type="text" id="productImages" v-model="form.productImages" />
 
-        <label for="userId">User ID:</label>
-        <input type="text" id="userId" v-model="form.userId" />
+        <label for="userName">Belong to User:</label>
+        <input type="text" id="userName" v-model="userName" :disabled="true" />
 
         <!-- <label for="CategoryId">Category ID:</label>
         <input type="text" id="categoryId" v-model="form.categoryId" /> -->
@@ -95,11 +95,15 @@
 <script>
 import CategoryService from "@/services/CategoryService";
 import ProductService from "../../services/ProductService";
+import { getUserData } from "@/utils/auth";
 
 export default {
   data() {
     return {
       categories: [], // To store the categories fetched from the API
+      userId: null,
+      userName: null,
+
       form: {
         productId: null, // Holds the ID for updates
         productName: "",
@@ -124,6 +128,17 @@ export default {
     if (productId) {
       this.isEdit = true;
       this.loadProduct(productId);
+    } else {
+      // Get user data from localStorage and assign to `user`
+      const storedUser = getUserData();
+
+      if (storedUser) {
+        // this.user = storedUser;
+        this.userId = storedUser.id;
+        this.userName = storedUser.firstName + " " + storedUser.lastName;
+      } else {
+        console.error("No user data found in localStorage");
+      }
     }
   },
 
@@ -131,6 +146,12 @@ export default {
     async loadProduct(productId) {
       try {
         const response = await ProductService.getProduct(productId);
+        this.userId = response.data.data.user.id;
+        this.userName =
+          response.data.data.user.firstName +
+          " " +
+          response.data.data.user.lastName;
+
         this.form = {
           productId: response.data.data.productId, // Ensure you access the correct nested data
           productName: response.data.data.name || "",
@@ -169,7 +190,7 @@ export default {
         color: this.form.productColor.split(",").map((color) => color.trim()), // Convert to list
         images: this.form.productImages.split(",").map((image) => image.trim()), // Convert to list
         active: this.form.isActive,
-        userId: this.form.userId,
+        userId: this.isEdit ? this.form.userId : this.userId,
         categoryId: this.form.categoryId,
       };
       if (this.isEdit) {

@@ -12,7 +12,7 @@ import Dashboard from "@/views/Dashboard.vue";
 import RoleList from "@/views/Role/RoleList.vue";
 import UserInfo from "@/views/UserInfo/UserInfo.vue";
 import UpdateUserInfo from "@/views/UserInfo/UpdateUserInfo.vue";
-import { isAuthenticated } from "@/utils/auth";
+import { getUserData, isAuthenticated } from "@/utils/auth";
 import AddOrUpdateRole from "@/views/Role/AddOrUpdateRole.vue";
 import RolePage from "@/views/Role/RolePage.vue";
 import UserList from "@/views/UserInfo/UserList.vue";
@@ -95,24 +95,25 @@ const routes = [
         name: "UserPage",
         component: UserPage,
         redirect: "/user-list", // Default to users list
+        meta: { requiresAuth: true, allowedRoles: ["admin"] },
         children: [
           {
             path: "/user-list",
             name: "UsersList",
             component: UserList,
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, allowedRoles: ["admin"] },
           },
           {
             path: "/user-list/add",
             name: "AddUser",
             component: AddOrUpdateUser,
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, allowedRoles: ["admin"] },
           },
           {
             path: "/user-list/edit/:userId",
             name: "UpdateUser",
             component: AddOrUpdateUser,
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true, allowedRoles: ["admin"] },
           },
         ],
       },
@@ -217,9 +218,23 @@ const router = createRouter({
 
 // Route guard for authentication
 router.beforeEach((to, from, next) => {
+  const user = getUserData(); // Assuming you store the user
+  const userRole = user ? user.role.name : null; // Get the role from the user object
+
   if (to.meta.requiresAuth && !isAuthenticated()) {
-    alert("You need to login to access this page.");
-    next({ name: "Login" });
+    if (!user) {
+      alert("You need to login to access this page.");
+      next({ name: "Login" });
+    } else {
+      // Check if the user's role is allowed for the route
+      const allowedRoles = to.meta.allowedRoles;
+      if (allowedRoles && !allowedRoles.includes(userRole)) {
+        // If the user's role is not allowed, redirect to an error page or home
+        next({ name: "Profile-info" });
+      } else {
+        next(); // Allow access
+      }
+    }
   } else {
     next();
   }
