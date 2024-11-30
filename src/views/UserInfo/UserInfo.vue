@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import AuthService from "@/services/AuthService";
 import { getUserData } from "@/utils/auth";
 
 export default {
@@ -37,10 +38,22 @@ export default {
   data() {
     return {
       user: null,
+      userId: null,
     };
   },
 
   methods: {
+    async loadUserInfo(userId) {
+      console.log(`Loading user info for ID: ${userId}`);
+
+      try {
+        const response = await AuthService.getUserDetailbyId(userId);
+        console.log("Server response:", response);
+        this.user = response.data.data;
+      } catch (error) {
+        console.error("Error loading user:", error);
+      }
+    },
     // Navigate to the 'UpdateProfileInfo' page and pass the userId as a parameter
     goToEdit() {
       if (this.user && this.user.id) {
@@ -56,11 +69,14 @@ export default {
     },
   },
 
-  created() {
+  async created() {
     // Get user data from localStorage and assign to `user`
     const storedUser = getUserData();
+
     if (storedUser) {
-      this.user = storedUser;
+      // this.user = storedUser;
+      this.userId = storedUser.id;
+      await this.loadUserInfo(this.userId);
     } else {
       console.error("No user data found in localStorage");
     }
@@ -71,7 +87,7 @@ export default {
 <style scoped>
 .container {
   padding: 20px;
-  background-color: #f9f9f9;
+  /* background-color: #f9f9f9; */
   border: 1px solid #ddd;
   border-radius: 10px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);

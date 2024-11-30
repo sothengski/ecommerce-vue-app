@@ -6,6 +6,10 @@ export const savedUserData = (userData) => {
   localStorage.setItem("user", JSON.stringify(userData));
 };
 
+export const savedUserId = (userId) => {
+  localStorage.setItem("userId", JSON.stringify(userId));
+};
+
 // Remove user data from localStorage
 export const logout = () => {
   localStorage.removeItem("user");
