@@ -13,6 +13,23 @@
         />
       </div>
 
+      <!-- Order Date -->
+      <div class="form-group">
+        <label for="orderDate">Order Date:</label>
+        <input type="text" id="orderDate" v-model="form.orderDate" disabled />
+      </div>
+
+      <!-- Order Address -->
+      <div class="form-group">
+        <label for="shippingAddress">Order Address:</label>
+        <input
+          type="text"
+          id="shippingAddress"
+          v-model="form.shippingAddress"
+          disabled
+        />
+      </div>
+
       <!-- Order Items -->
       <div class="form-group">
         <label for="items">Order Items:</label>
