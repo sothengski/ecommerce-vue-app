@@ -9,7 +9,9 @@
         <tr>
           <th>Order ID</th>
           <th>Order Number</th>
+          <th>Buyer</th>
           <th>Total Items</th>
+          <th>Total Quantities</th>
           <th>Total Price</th>
           <th>Status</th>
           <th>Actions</th>
@@ -19,7 +21,9 @@
         <tr v-for="order in orders" :key="order.orderId">
           <td>{{ order.orderId }}</td>
           <td>{{ order.orderNumber }}</td>
+          <td>{{ order.user.firstName }} {{ order.user.lastName }}</td>
           <td>{{ order.items.length }}</td>
+          <td>{{ order.totalQuantity }}</td>
           <td>{{ order.totalPrice }}</td>
           <td>{{ order.orderStatus }}</td>
           <td>
